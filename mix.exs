@@ -36,7 +36,10 @@ defmodule ExUtils.MixProject do
 
   defp deps do
     [
-      {:ecto_sql, "~> 3.9"}
+      {:ecto_sql, "~> 3.9"},
+
+      # tools
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 end
