@@ -1,7 +1,7 @@
-defmodule ExUtils do
+defmodule Utilx do
   defmacro __using__ do
     quote do
-      import ExUtils.EctoUtils
+      import Utilx.EctoUtils
     end
   end
 end

@@ -1,8 +1,8 @@
-defmodule ExUtils.MixProject do
+defmodule Utilx.MixProject do
   use Mix.Project
 
-  @app :ex_utils
-  @name "ExUtils"
+  @app :utilx
+  @name "Utilx"
   @version "0.0.0"
   @description "Collection of effective recipes for building Elixir applications"
   @scm_url "https://github.com/marmelasoft/ex_utils"

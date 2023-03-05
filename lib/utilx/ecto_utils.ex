@@ -1,4 +1,4 @@
-defmodule ExUtils.EctoUtils do
+defmodule Utilx.EctoUtils do
   import Ecto.Query, warn: false
 
   def apply_filters(query, opts) do
