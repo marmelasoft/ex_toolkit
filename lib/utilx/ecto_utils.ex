@@ -1,7 +1,7 @@
 defmodule Utilx.EctoUtils do
   import Ecto.Query, warn: false
 
-  def apply_filters(query, opts) do
+  def apply_filters(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
       {:where, filters}, query ->
         where(query, ^filters)
