@@ -1,6 +1,11 @@
 defmodule Utilx.EctoUtils do
   import Ecto.Query, warn: false
 
+  def in_range(query, column, min..max) do
+    query
+    |> where([row], field(row, ^column) >= ^min and field(row, ^column) <= ^max)
+  end
+
   def apply_filters(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
       {:where, filters}, query ->
