@@ -37,6 +37,7 @@ defmodule Utilx.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.9"},
+      {:timex, "~> 3.7"},
 
       # tools
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
