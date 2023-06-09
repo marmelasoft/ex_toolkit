@@ -3,7 +3,7 @@ defmodule Utilx.MixProject do
 
   @app :utilx
   @name "Utilx"
-  @version "0.0.0"
+  @version "0.1.0"
   @description "Collection of effective recipes for building Elixir applications"
   @scm_url "https://github.com/marmelasoft/ex_utils"
 
@@ -36,10 +36,9 @@ defmodule Utilx.MixProject do
 
   defp deps do
     [
-      {:ecto_sql, "~> 3.9"},
-      {:timex, "~> 3.7"},
+      {:ecto_sql, "~> 3.10"},
 
-      # tools
+      # dev tools
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
