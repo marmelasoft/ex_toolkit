@@ -14,20 +14,20 @@ defmodule Utilx.BenchUtils do
   """
   defmacro timeit(name, do: yield) do
     quote do
+      humanize = fn
+        time_us when time_us < 1_000 -> "#{time_us} μs"
+        time_us when time_us < 1_000_000 -> "#{Float.round(time_us / 1_000, 2)} ms"
+        time_us -> "#{Float.round(time_us / 1_000_000, 2)} s"
+      end
+
       {time, value} =
         :timer.tc(fn ->
           unquote(yield)
         end)
 
-      IO.puts("Executed #{unquote(name)} in #{humanize(time)}")
+      IO.puts("Executed #{unquote(name)} in #{humanize.(time)}")
 
       value
     end
   end
-
-  defp humanize(time_us) when time_us < 1_000, do: "#{time_us} μs"
-
-  defp humanize(time_us) when time_us < 1_000_000, do: "#{Float.round(time_us / 1_000, 2)} ms"
-
-  defp humanize(time_us), do: "#{Float.round(time_us / 1_000_000, 2)} s"
 end
