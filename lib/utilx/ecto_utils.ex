@@ -25,31 +25,31 @@ defmodule Utilx.EctoUtils do
     - `field`: The key (atom) for the field in the changeset containing the URL.
     - `error_message`: The error message to attach to the `field` in the `changeset` if the URL is invalid.
 
-  ## Example:
+  ## Examples
 
-    iex> types = %{url: :string}
-    iex> params = %{url: "https://www.example.com/"}
-    iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-    ...> |> EctoUtils.validate_url(:url, "is not a valid url")
-    #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
+      iex> types = %{url: :string}
+      iex> params = %{url: "https://www.example.com/"}
+      iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
+      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
 
-    iex> types = %{url: :string}
-    iex> params = %{url: "www.example.com/"}
-    iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-    ...> |> EctoUtils.validate_url(:url, "is not a valid url")
-    #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
+      iex> types = %{url: :string}
+      iex> params = %{url: "www.example.com/"}
+      iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
+      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
 
-    iex> types = %{url: :string}
-    iex> params = %{url: "some@invalid_url"}
-    iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-    ...> |> EctoUtils.validate_url(:url, "is not a valid url")
-    #Ecto.Changeset<action: nil, changes: %{url: "https://some@invalid_url"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
+      iex> types = %{url: :string}
+      iex> params = %{url: "some@invalid_url"}
+      iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
+      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      #Ecto.Changeset<action: nil, changes: %{url: "https://some@invalid_url"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
 
-    iex> types = %{url: :string}
-    iex> params = %{url: "Just some random text"}
-    iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-    ...> |> EctoUtils.validate_url(:url, "is not a valid url")
-    #Ecto.Changeset<action: nil, changes: %{url: "https://Just some random text"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
+      iex> types = %{url: :string}
+      iex> params = %{url: "Just some random text"}
+      iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
+      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      #Ecto.Changeset<action: nil, changes: %{url: "https://Just some random text"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
   """
   def validate_url(changeset, field, error_message) do
     changeset
@@ -112,10 +112,10 @@ defmodule Utilx.EctoUtils do
 
   ## Examples
 
-    iex> query = from(u in "users")
-    iex> filters = [{:where, [age: 18]}, {:order_by, [desc: :age]}]
-    iex> EctoUtils.apply_filters(query, filters)
-    #Ecto.Query<from u0 in \"users\", where: u0.age == ^18, order_by: [desc: u0.age]>
+      iex> query = from(u in "users")
+      iex> filters = [{:where, [age: 18]}, {:order_by, [desc: :age]}]
+      iex> EctoUtils.apply_filters(query, filters)
+      #Ecto.Query<from u0 in \"users\", where: u0.age == ^18, order_by: [desc: u0.age]>
   """
   def apply_filters(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn

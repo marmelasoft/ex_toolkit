@@ -17,26 +17,26 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-    iex> NamingUtils.shorten_firstname(nil)
-    ""
+      iex> NamingUtils.shorten_firstname(nil)
+      ""
 
-    iex> NamingUtils.shorten_firstname("")
-    ""
+      iex> NamingUtils.shorten_firstname("")
+      ""
 
-    iex> NamingUtils.shorten_firstname("John")
-    "J."
+      iex> NamingUtils.shorten_firstname("John")
+      "J."
 
-    iex> NamingUtils.shorten_firstname("john")
-    "J."
+      iex> NamingUtils.shorten_firstname("john")
+      "J."
 
-    iex> NamingUtils.shorten_firstname("John Doe")
-    "J. Doe"
+      iex> NamingUtils.shorten_firstname("John Doe")
+      "J. Doe"
 
-    iex> NamingUtils.shorten_firstname("john doe")
-    "J. Doe"
+      iex> NamingUtils.shorten_firstname("john doe")
+      "J. Doe"
 
-    iex> NamingUtils.shorten_firstname("john doe jr")
-    "J. Doe Jr"
+      iex> NamingUtils.shorten_firstname("john doe jr")
+      "J. Doe Jr"
   """
   @spec shorten_firstname(nil | String.t()) :: String.t()
   def shorten_firstname(name) when is_nil(name) or name == "", do: ""
@@ -65,20 +65,20 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-    iex> NamingUtils.extract_initials(nil)
-    ""
+      iex> NamingUtils.extract_initials(nil)
+      ""
 
-    iex> NamingUtils.extract_initials("")
-    ""
+      iex> NamingUtils.extract_initials("")
+      ""
 
-    iex> NamingUtils.extract_initials("John")
-    "J"
+      iex> NamingUtils.extract_initials("John")
+      "J"
 
-    iex> NamingUtils.extract_initials("John Doe")
-    "JD"
+      iex> NamingUtils.extract_initials("John Doe")
+      "JD"
 
-    iex> NamingUtils.extract_initials("John Nommensen Duchac")
-    "JD"
+      iex> NamingUtils.extract_initials("John Nommensen Duchac")
+      "JD"
   """
   @spec extract_initials(nil | String.t()) :: String.t()
   def extract_initials(name) when is_nil(name) or name == "", do: ""
@@ -105,17 +105,17 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-    iex> NamingUtils.extract_first_last_name(nil)
-    ""
+      iex> NamingUtils.extract_first_last_name(nil)
+      ""
 
-    iex> NamingUtils.extract_first_last_name("")
-    ""
+      iex> NamingUtils.extract_first_last_name("")
+      ""
 
-    iex> NamingUtils.extract_first_last_name("john")
-    "John"
+      iex> NamingUtils.extract_first_last_name("john")
+      "John"
 
-    iex> NamingUtils.extract_first_last_name("john doe smith")
-    "John Smith"
+      iex> NamingUtils.extract_first_last_name("john doe smith")
+      "John Smith"
   """
   @spec extract_first_last_name(nil | String.t()) :: String.t()
   def extract_first_last_name(name) when is_nil(name) or name == "", do: ""
@@ -141,20 +141,20 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-    iex> NamingUtils.capitalize(nil)
-    ""
+      iex> NamingUtils.capitalize(nil)
+      ""
 
-    iex> NamingUtils.capitalize("")
-    ""
+      iex> NamingUtils.capitalize("")
+      ""
 
-    iex> NamingUtils.capitalize("john doe")
-    "John Doe"
+      iex> NamingUtils.capitalize("john doe")
+      "John Doe"
 
-    iex> NamingUtils.capitalize("JOHN DOE")
-    "John Doe"
+      iex> NamingUtils.capitalize("JOHN DOE")
+      "John Doe"
 
-    iex> NamingUtils.capitalize("john nommensen duchac")
-    "John Nommensen Duchac"
+      iex> NamingUtils.capitalize("john nommensen duchac")
+      "John Nommensen Duchac"
   """
   @spec capitalize(nil | String.t()) :: String.t()
   def capitalize(name) when is_nil(name) or name == "", do: ""
