@@ -1,4 +1,11 @@
 defmodule Utilx.GitUtils do
+  @moduledoc """
+  This module provides utility functions for interacting with Git.
+  """
+
+  @doc """
+  Retrieves the current Git revision hash.
+  """
   @spec revision_hash :: String.t()
   def revision_hash do
     case System.cmd("git", ["rev-parse", "HEAD"]) do
