@@ -60,6 +60,10 @@ defmodule Utilx.NamingUtilsTest do
       assert NamingUtils.extract_first_last_name("Nelson    Estevão  ") == "Nelson Estevão"
     end
 
+    test "when it is a number" do
+      assert NamingUtils.extract_first_last_name("12312 2123 1") == ""
+    end
+
     test "when it is a full name" do
       assert NamingUtils.extract_first_last_name("Nelson Miguel de Oliveira Estevão") ==
                "Nelson Estevão"

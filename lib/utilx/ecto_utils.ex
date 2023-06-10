@@ -12,7 +12,7 @@ defmodule Utilx.EctoUtils do
   @http_regex ~r/^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/ius
 
   @doc """
-  Validates the structure of a URL field in an Ecto changeset.
+  Validates the structure of a URL field in an Ecto changeset. It does not make it required field.
 
   If the `field` in the `changeset` is a URL, this function ensures that it has a scheme (defaulting to "https://" if
   none is present), and then checks the URL's structure against a regular expression.
@@ -38,6 +38,12 @@ defmodule Utilx.EctoUtils do
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
       ...> |> EctoUtils.validate_url(:url, "is not a valid url")
       #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
+
+      iex> types = %{url: :string}
+      iex> params = %{url: nil}
+      iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
+      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      #Ecto.Changeset<action: nil, changes: %{}, errors: [], data: %{}, valid?: true>
 
       iex> types = %{url: :string}
       iex> params = %{url: "some@invalid_url"}
@@ -105,7 +111,7 @@ defmodule Utilx.EctoUtils do
   The following operations are supported:
 
   - `{:where, filters}`: Adds a `where` clause to the query.
-  - `{:fields, fields}`: Adds a `select` clause to the query.
+  - `{:select, fields}`: Adds a `select` clause to the query.
   - `{:order_by, criteria}`: Adds an `order_by` clause to the query.
   - `{:limit, criteria}`: Adds a `limit` clause to the query.
   - `{:preload, preload}`: Adds a `preload` clause to the query.
@@ -113,16 +119,22 @@ defmodule Utilx.EctoUtils do
   ## Examples
 
       iex> query = from(u in "users")
-      iex> filters = [{:where, [age: 18]}, {:order_by, [desc: :age]}]
+      iex> filters = [
+      ...> {:where, [age: 18]},
+      ...> {:order_by, [desc: :age]},
+      ...> {:select, [:id, :email]},
+      ...> {:limit, 10},
+      ...> {:preload, :posts}
+      ...>]
       iex> EctoUtils.apply_filters(query, filters)
-      #Ecto.Query<from u0 in \"users\", where: u0.age == ^18, order_by: [desc: u0.age]>
+      #Ecto.Query<from u0 in \"users\", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
   """
   def apply_filters(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
       {:where, filters}, query ->
         where(query, ^filters)
 
-      {:fields, fields}, query ->
+      {:select, fields}, query ->
         select(query, [i], map(i, ^fields))
 
       {:order_by, criteria}, query ->
