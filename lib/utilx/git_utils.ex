@@ -8,20 +8,21 @@ defmodule Utilx.GitUtils do
   """
   @spec revision_hash :: String.t()
   def revision_hash do
-    case System.cmd("git", ["rev-parse", "HEAD"]) do
-      {ref, 0} ->
-        ref
-
-      {_, _code} ->
-        git_ref = File.read!(".git/HEAD")
-
-        if String.contains?(git_ref, "ref:") do
-          ["ref:", ref_path] = String.split(git_ref)
-          File.read!(".git/#{ref_path}")
-        else
-          git_ref
-        end
+    case System.cmd("git", ["rev-parse", "HEAD"], stderr_to_stdout: true, into: "") do
+      {ref, 0} -> String.trim(ref)
+      _ -> get_git_ref()
     end
-    |> String.replace("\n", "")
+  end
+
+  defp get_git_ref do
+    git_ref = File.read!(Path.join(".git", "HEAD"))
+
+    if String.contains?(git_ref, "ref:") do
+      [_, ref_path] = String.split(git_ref)
+      File.read!(Path.join(".git", String.trim(ref_path)))
+    else
+      git_ref
+    end
+    |> String.trim()
   end
 end
