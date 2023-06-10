@@ -84,15 +84,17 @@ defmodule Utilx.NamingUtils do
   def extract_initials(name) when is_nil(name) or name == "", do: ""
 
   def extract_initials(name) do
-    [first | rest] =
+    initials =
       name
-      |> String.upcase()
-      |> split_and_filter_names()
-      |> Enum.map(&String.first/1)
+      |> String.split(" ")
+      |> Stream.map(&String.first/1)
+      |> Stream.filter(&String.match?(&1, ~r/^\p{L}$/u))
+      |> Enum.map(&String.upcase/1)
 
-    case rest do
-      [] -> first || ""
-      _ -> first <> Enum.at(rest, -1)
+    case initials do
+      [] -> ""
+      [first] -> first
+      [first | rest] -> first <> Enum.at(rest, -1)
     end
   end
 
@@ -121,14 +123,16 @@ defmodule Utilx.NamingUtils do
   def extract_first_last_name(name) when is_nil(name) or name == "", do: ""
 
   def extract_first_last_name(name) do
-    [first | rest] =
+    names =
       name
-      |> split_and_filter_names()
+      |> String.split(" ")
+      |> Stream.filter(&String.match?(String.slice(&1, 0, 1), ~r/^\p{L}$/u))
       |> Enum.map(&String.capitalize/1)
 
-    case rest do
-      [] -> first
-      _ -> first <> " " <> Enum.at(rest, -1)
+    case names do
+      [] -> ""
+      [first] -> first
+      [first | rest] -> first <> " " <> Enum.at(rest, -1)
     end
   end
 
@@ -164,11 +168,5 @@ defmodule Utilx.NamingUtils do
     |> String.split(" ")
     |> Enum.map(&String.capitalize/1)
     |> Enum.join(" ")
-  end
-
-  defp split_and_filter_names(name) do
-    name
-    |> String.split(" ")
-    |> Enum.filter(&String.match?(String.first(&1), ~r/^\p{L}$/u))
   end
 end
