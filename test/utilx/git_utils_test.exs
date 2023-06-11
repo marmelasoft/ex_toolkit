@@ -56,8 +56,14 @@ defmodule Utilx.GitUtilsTest do
       File.cd!(git_dir_path, fn ->
         git_init_repo()
 
-        {commit_hash, 0} = System.cmd("git", ["rev-parse", "HEAD"], stderr_to_stdout: true, into: "")
-        {_output, 0} = System.cmd("git", ["checkout", String.trim(commit_hash)], stderr_to_stdout: true, into: "")
+        {commit_hash, 0} =
+          System.cmd("git", ["rev-parse", "HEAD"], stderr_to_stdout: true, into: "")
+
+        {_output, 0} =
+          System.cmd("git", ["checkout", String.trim(commit_hash)],
+            stderr_to_stdout: true,
+            into: ""
+          )
 
         System.cmd("rm", ["-rf", Path.join(git_dir_path, ".git/objects")])
 
@@ -67,17 +73,17 @@ defmodule Utilx.GitUtilsTest do
   end
 
   defp git_init_repo do
-        System.cmd("git", ["init"])
+    System.cmd("git", ["init"])
 
-        System.cmd("git", ["commit", "--no-gpg-sign", "--allow-empty", "-m", "Hi"],
-          env: [
-            {"GIT_AUTHOR_NAME", "Test"},
-            {"GIT_AUTHOR_EMAIL", "test@example.com"},
-            {"GIT_AUTHOR_DATE", "2023-03-04T23:36:00 +000"},
-            {"GIT_COMMITTER_NAME", "Test"},
-            {"GIT_COMMITTER_EMAIL", "test@example.com"},
-            {"GIT_COMMITTER_DATE", "2023-03-04T23:36:00 +000"}
-          ]
-        )
+    System.cmd("git", ["commit", "--no-gpg-sign", "--allow-empty", "-m", "Hi"],
+      env: [
+        {"GIT_AUTHOR_NAME", "Test"},
+        {"GIT_AUTHOR_EMAIL", "test@example.com"},
+        {"GIT_AUTHOR_DATE", "2023-03-04T23:36:00 +000"},
+        {"GIT_COMMITTER_NAME", "Test"},
+        {"GIT_COMMITTER_EMAIL", "test@example.com"},
+        {"GIT_COMMITTER_DATE", "2023-03-04T23:36:00 +000"}
+      ]
+    )
   end
 end
