@@ -86,6 +86,7 @@ defmodule Utilx.NamingUtils do
   def extract_initials(name) do
     initials =
       name
+      |> String.trim()
       |> String.split(" ")
       |> Stream.map(&String.first/1)
       |> Stream.filter(&String.match?(&1, ~r/^\p{L}$/u))
@@ -125,6 +126,7 @@ defmodule Utilx.NamingUtils do
   def extract_first_last_name(name) do
     names =
       name
+      |> String.trim()
       |> String.split(" ")
       |> Stream.filter(&String.match?(String.slice(&1, 0, 1), ~r/^\p{L}$/u))
       |> Enum.map(&String.capitalize/1)

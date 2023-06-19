@@ -37,6 +37,15 @@ defmodule Utilx.NamingUtilsTest do
     test "when it is a number" do
       assert NamingUtils.extract_initials("12312 2123 1") == ""
     end
+
+    test "when it has white around" do
+      assert NamingUtils.extract_initials("Ana Rita Ribeiro ") == "AR"
+      assert NamingUtils.extract_initials("Ana Rita Ribeiro   ") == "AR"
+
+      assert NamingUtils.extract_initials("  Ana Ribeiro ") == "AR"
+
+      assert NamingUtils.extract_initials(" Ana Rita Ribeiro") == "AR"
+    end
   end
 
   describe "#extract_first_last_name/1" do
@@ -77,6 +86,15 @@ defmodule Utilx.NamingUtilsTest do
     test "when it is a full name with extra info in ()" do
       assert NamingUtils.extract_first_last_name("nelson araújo felício (Marmelasoft)") ==
                "Nelson Felício"
+    end
+
+    test "when it has white around" do
+      assert NamingUtils.extract_first_last_name("Ana Rita Ribeiro ") == "Ana Ribeiro"
+      assert NamingUtils.extract_first_last_name("Ana Rita Ribeiro   ") == "Ana Ribeiro"
+
+      assert NamingUtils.extract_first_last_name("  Ana Ribeiro ") == "Ana Ribeiro"
+
+      assert NamingUtils.extract_first_last_name(" Ana Rita Ribeiro") == "Ana Ribeiro"
     end
   end
 end
