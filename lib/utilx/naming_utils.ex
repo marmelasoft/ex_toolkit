@@ -89,6 +89,8 @@ defmodule Utilx.NamingUtils do
       |> String.trim()
       |> String.split(" ")
       |> Stream.map(&String.first/1)
+      |> Stream.filter(& &1 != "" and not is_nil(&1))
+      |> Stream.map(&String.trim/1)
       |> Stream.filter(&String.match?(&1, ~r/^\p{L}$/u))
       |> Enum.map(&String.upcase/1)
 

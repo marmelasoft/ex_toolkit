@@ -5,96 +5,37 @@ defmodule Utilx.NamingUtilsTest do
 
   doctest NamingUtils
 
+  tests = [
+    # test name, input, initials, first and last name
+    {"nil does not crash", nil, "", ""},
+    {"when it is empty", "", "", ""},
+    {"when has only one name", "Nelson", "N", "Nelson"},
+    {"when has two names", "Nelson Estevão", "NE", "Nelson Estevão"},
+    {"when has unwanted spaces", "Nelson    Estevão  ", "NE", "Nelson Estevão"},
+    {"when it is full name", "Nelson Miguel Araújo Felício", "NF", "Nelson Felício"},
+    {"when it is full name and not capitalize", "nelson miguel araújo felício", "NF",
+     "Nelson Felício"},
+    {"when it is full name with extra info in ()", "nelson araújo felício (Marmelasoft)", "NF",
+     "Nelson Felício"},
+    {"when it is a number", "12312 2123 1", "", ""},
+    {"when there are leading spaces", "  Nelson Estevão", "NE", "Nelson Estevão"},
+    {"when there are trailing spaces", "Nelson Estevão  ", "NE", "Nelson Estevão"},
+    {"when there are spaces around", "  Nelson Miguel Estevão  ", "NE", "Nelson Estevão"}
+  ]
+
   describe "#extract_initials/1" do
-    test "nil does not crash" do
-      assert NamingUtils.extract_initials(nil) == ""
-    end
-
-    test "when it is empty" do
-      assert NamingUtils.extract_initials("") == ""
-    end
-
-    test "when has only one name" do
-      assert NamingUtils.extract_initials("Nelson") == "N"
-    end
-
-    test "when has two names" do
-      assert NamingUtils.extract_initials("Nelson Estevão") == "NE"
-    end
-
-    test "when it is a full name" do
-      assert NamingUtils.extract_initials("Nelson Miguel Araújo Felício") == "NF"
-    end
-
-    test "when it is a full name and not capitalize" do
-      assert NamingUtils.extract_initials("nelson miguel araújo felício") == "NF"
-    end
-
-    test "when it is a full name with extra info in ()" do
-      assert NamingUtils.extract_initials("nelson miguel araújo felício (Marmelasoft)") == "NF"
-    end
-
-    test "when it is a number" do
-      assert NamingUtils.extract_initials("12312 2123 1") == ""
-    end
-
-    test "when it has white around" do
-      assert NamingUtils.extract_initials("Ana Rita Ribeiro ") == "AR"
-      assert NamingUtils.extract_initials("Ana Rita Ribeiro   ") == "AR"
-
-      assert NamingUtils.extract_initials("  Ana Ribeiro ") == "AR"
-
-      assert NamingUtils.extract_initials(" Ana Rita Ribeiro") == "AR"
+    for {description, input, expected, _first_last_name} <- tests do
+      test description do
+        assert NamingUtils.extract_initials(unquote(input)) == unquote(expected)
+      end
     end
   end
 
   describe "#extract_first_last_name/1" do
-    test "nil does not crash" do
-      assert NamingUtils.extract_first_last_name(nil) == ""
-    end
-
-    test "when it is empty" do
-      assert NamingUtils.extract_first_last_name("") == ""
-    end
-
-    test "when has only one name" do
-      assert NamingUtils.extract_first_last_name("Nelson") == "Nelson"
-    end
-
-    test "when has two names" do
-      assert NamingUtils.extract_first_last_name("Nelson Estevão") == "Nelson Estevão"
-    end
-
-    test "when has unwated spaces" do
-      assert NamingUtils.extract_first_last_name("Nelson    Estevão  ") == "Nelson Estevão"
-    end
-
-    test "when it is a number" do
-      assert NamingUtils.extract_first_last_name("12312 2123 1") == ""
-    end
-
-    test "when it is a full name" do
-      assert NamingUtils.extract_first_last_name("Nelson Miguel de Oliveira Estevão") ==
-               "Nelson Estevão"
-    end
-
-    test "when it is a full name and not capitalize" do
-      assert NamingUtils.extract_first_last_name("nelson miguel de oliveira estevão") ==
-               "Nelson Estevão"
-    end
-
-    test "when it is a full name with extra info in ()" do
-      assert NamingUtils.extract_first_last_name("nelson araújo felício (Marmelasoft)") ==
-               "Nelson Felício"
-    end
-
-    test "when it has white around" do
-      assert NamingUtils.extract_first_last_name("Ana Rita Ribeiro ") == "Ana Ribeiro"
-      assert NamingUtils.extract_first_last_name("Ana Rita Ribeiro   ") == "Ana Ribeiro"
-
-      assert NamingUtils.extract_first_last_name("  Ana Ribeiro ") == "Ana Ribeiro"
-
-      assert NamingUtils.extract_first_last_name(" Ana Rita Ribeiro") == "Ana Ribeiro"
+    for {description, input, _initials, expected} <- tests do
+      test description do
+        assert NamingUtils.extract_first_last_name(unquote(input)) == unquote(expected)
+      end
     end
   end
 end
