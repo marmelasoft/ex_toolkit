@@ -119,6 +119,10 @@ defmodule Utilx.EctoUtils do
   ## Examples
 
       iex> query = from(u in "users")
+      iex> EctoUtils.apply_filters(query, where: [age: 18], select: [:id, :email])
+      #Ecto.Query<from u0 in "users", where: u0.age == ^18, select: map(u0, [:id, :email])>
+
+      iex> query = from(u in "users")
       iex> filters = [
       ...> {:where, [age: 18]},
       ...> {:order_by, [desc: :age]},
@@ -127,7 +131,7 @@ defmodule Utilx.EctoUtils do
       ...> {:preload, :posts}
       ...>]
       iex> EctoUtils.apply_filters(query, filters)
-      #Ecto.Query<from u0 in \"users\", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
+      #Ecto.Query<from u0 in "users", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
   """
   def apply_filters(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
