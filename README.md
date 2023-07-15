@@ -1,5 +1,10 @@
 # Elixir Utils
 
+[![hex.pm](https://img.shields.io/hexpm/v/utilx.svg)](https://hex.pm/packages/utilx)
+[![hex.pm](https://img.shields.io/hexpm/dt/utilx.svg)](https://hex.pm/packages/utilx)
+[![hex.pm](https://img.shields.io/hexpm/l/utilx.svg)](https://hex.pm/packages/utilx)
+[![github.com](https://img.shields.io/github/last-commit/marmelasoft/ex_utils.svg)](https://github.com/marmelasoft/ex_utils)
+
 `Utilx` is a collection of Elixir helpers that offers pre-built effective
 recipes for common needs when developing most applications.
 
