@@ -14,7 +14,7 @@ defmodule Utilx.MixProject do
       description: @description,
       version: @version,
       source_url: @scm_url,
-      elixir: "~> 1.14",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       package: package(),
       deps: deps()
