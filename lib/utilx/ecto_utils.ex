@@ -67,7 +67,7 @@ defmodule Utilx.EctoUtils do
     changeset
     |> get_field(field)
     |> do_ensure_url_scheme()
-    |> (fn url -> put_change(changeset, field, url) end).()
+    |> then(&put_change(changeset, field, &1))
   end
 
   defp do_ensure_url_scheme(nil), do: nil
