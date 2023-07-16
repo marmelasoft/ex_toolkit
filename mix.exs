@@ -3,7 +3,7 @@ defmodule Utilx.MixProject do
 
   @app :utilx
   @name "Utilx"
-  @version "0.3.1"
+  @version "0.4.0"
   @description "Collection of effective recipes for building Elixir applications"
   @scm_url "https://github.com/marmelasoft/ex_utils"
 
@@ -14,7 +14,7 @@ defmodule Utilx.MixProject do
       description: @description,
       version: @version,
       source_url: @scm_url,
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       package: package(),
       deps: deps()
