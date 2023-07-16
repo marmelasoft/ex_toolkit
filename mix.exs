@@ -3,7 +3,7 @@ defmodule Utilx.MixProject do
 
   @app :utilx
   @name "Utilx"
-  @version "0.2.2"
+  @version "0.3.0"
   @description "Collection of effective recipes for building Elixir applications"
   @scm_url "https://github.com/marmelasoft/ex_utils"
 
