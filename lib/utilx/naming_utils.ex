@@ -173,4 +173,32 @@ defmodule Utilx.NamingUtils do
     |> Enum.map(&String.capitalize/1)
     |> Enum.join(" ")
   end
+
+  @doc """
+  Formats an atom into a usable string.
+
+  ## Parameters
+
+  - `atom`: An atom.
+
+  ## Examples
+
+      iex> NamingUtils.format_atom(:john)
+      "John"
+
+      iex> NamingUtils.format_atom(":john_doe")
+      "John Doe"
+
+      iex> NamingUtils.format_atom(":john_nommensen_duchac")
+      "John Nommensen Duchac"
+  """
+  @spec format_atom(Atom.t()) :: String.t()
+  def format_atom(atom) do
+    atom
+    |> Atom.to_string()
+    |> String.replace_prefix(":", "")
+    |> String.split("_")
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
+  end
 end
