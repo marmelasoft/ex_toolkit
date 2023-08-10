@@ -192,7 +192,7 @@ defmodule Utilx.NamingUtils do
       iex> NamingUtils.format_atom(":john_nommensen_duchac")
       "John Nommensen Duchac"
   """
-  @spec format_atom(Atom.t()) :: String.t()
+  @spec format_atom(atom) :: String.t()
   def format_atom(atom) do
     atom
     |> Atom.to_string()
