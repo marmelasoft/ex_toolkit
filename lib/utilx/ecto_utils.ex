@@ -128,7 +128,8 @@ defmodule Utilx.EctoUtils do
       ...> {:order_by, [desc: :age]},
       ...> {:select, [:id, :email]},
       ...> {:limit, 10},
-      ...> {:preload, :posts}
+      ...> {:preload, :posts},
+      ...> {:invalid, "is ignored from query result"}
       ...>]
       iex> EctoUtils.apply_filters(query, filters)
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
