@@ -36,7 +36,12 @@ defmodule Utilx.MixProject do
 
   defp deps do
     [
+      # databases
       {:ecto_sql, "~> 3.10"},
+
+      # encoding
+      {:uniq, "~> 0.6.0"},
+      {:base62, "~> 1.2.2"},
 
       # dev tools
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
