@@ -8,6 +8,8 @@ defmodule Utilx.EctoUtils do
   import Ecto.Query
   import Ecto.Changeset
 
+  require Logger
+
   # Taken from here https://mathiasbynens.be/demo/url-regex
   @http_regex ~r/^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/ius
 
@@ -116,10 +118,12 @@ defmodule Utilx.EctoUtils do
   - `{:limit, criteria}`: Adds a `limit` clause to the query.
   - `{:preload, preload}`: Adds a `preload` clause to the query.
 
+  Invalid options are ignored from query result.
+
   ## Examples
 
       iex> query = from(u in "users")
-      iex> EctoUtils.apply_filters(query, where: [age: 18], select: [:id, :email])
+      iex> EctoUtils.apply_options(query, where: [age: 18], select: [:id, :email])
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, select: map(u0, [:id, :email])>
 
       iex> query = from(u in "users")
@@ -129,12 +133,11 @@ defmodule Utilx.EctoUtils do
       ...> {:select, [:id, :email]},
       ...> {:limit, 10},
       ...> {:preload, :posts},
-      ...> {:invalid, "is ignored from query result"}
       ...>]
-      iex> EctoUtils.apply_filters(query, filters)
+      iex> EctoUtils.apply_options(query, filters)
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
   """
-  def apply_filters(query, opts) when is_list(opts) do
+  def apply_options(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
       {:where, filters}, query ->
         where(query, ^filters)
@@ -151,8 +154,13 @@ defmodule Utilx.EctoUtils do
       {:preload, preload}, query ->
         preload(query, ^preload)
 
-      _, query ->
+      {option, _value}, query ->
+        Logger.warning("option #{inspect(option)} is invalid and being ignored")
+
         query
     end)
   end
+
+  @deprecated "use apply_options/2 instead"
+  def apply_filters(query, opts) when is_list(opts), do: apply_options(query, opts)
 end
