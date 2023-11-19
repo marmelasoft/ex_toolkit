@@ -16,7 +16,7 @@ The package can be installed by adding `utilx` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:utilx, "~> 0.5.0"}
+    {:utilx, "~> 0.6.0"}
   ]
 end
 ```
