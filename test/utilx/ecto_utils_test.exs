@@ -14,4 +14,13 @@ defmodule Utilx.EctoUtilsTest do
              EctoUtils.apply_options(from(u in "users"), non_option: "not real")
            end) =~ "option :non_option is invalid and being ignored"
   end
+
+  test "if an invalid option is used with sanitize options a log message should not be displayed" do
+    assert capture_log(fn ->
+             EctoUtils.apply_options(
+               from(u in "users"),
+               EctoUtils.sanitize_options(non_option: "not real")
+             )
+           end) =~ ""
+  end
 end
