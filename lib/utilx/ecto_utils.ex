@@ -137,7 +137,7 @@ defmodule Utilx.EctoUtils do
       iex> EctoUtils.apply_options(query, filters)
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
   """
-  @spec apply_options(Ecto.Query.t(), Keyword.t()) :: Ecto.Query.t()
+  @spec apply_options(Ecto.Queryable.t(), Keyword.t()) :: Ecto.Queryable.t()
   def apply_options(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
       {:where, filters}, query ->
