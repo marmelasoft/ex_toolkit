@@ -12,6 +12,8 @@ defmodule Utilx.GitUtils do
       {ref, 0} -> String.trim(ref)
       _ -> get_git_ref()
     end
+  rescue
+    _ -> get_git_ref()
   end
 
   defp get_git_ref do
