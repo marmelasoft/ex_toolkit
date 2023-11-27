@@ -168,4 +168,54 @@ defmodule Utilx.EctoUtils do
 
   @deprecated "use apply_options/2 instead"
   def apply_filters(query, opts) when is_list(opts), do: apply_options(query, opts)
+
+  @doc """
+  Applies pagination to an Ecto query. It calculates the correct offset based on the page number and limits the number
+  of results returned by the query to the specified page size.
+
+  ## Parameters
+
+    - `query` - An Ecto.Query or any data structure implementing the `Ecto.Queryable` protocol.
+    - `page` - The page number for which data is requested. Can be a positive integer or a string representing an integer.
+    - `page_size` - The number of items to be included on each page. Can be a positive integer or a string representing an integer.
+
+  ## Returns
+
+    - An `Ecto.Queryable.t()` with pagination applied.
+
+  This function supports page and page_size values passed as integers or strings. If strings are provided, they are
+  converted to integers. If the conversion is not possible, an error will occur.
+
+  ## Examples
+
+      iex> query = from(u in "users", select: u.id)
+      iex> EctoUtils.apply_pagination(query, 1, 20)
+      #Ecto.Query<from u0 in "users", limit: ^20, offset: ^0, select: u0.id>
+
+      iex> query = from(u in "users", select: u.id)
+      iex> EctoUtils.apply_pagination(query, "2", 20)
+      #Ecto.Query<from u0 in "users", limit: ^20, offset: ^20, select: u0.id>
+
+      iex> query = from(u in "users", select: u.id)
+      iex> EctoUtils.apply_pagination(query, 4, 15)
+      #Ecto.Query<from u0 in "users", limit: ^15, offset: ^45, select: u0.id>
+
+  """
+  @spec apply_pagination(Ecto.Queryable.t(), binary() | pos_integer(), binary() | pos_integer()) ::
+          Ecto.Queryable.t()
+  def apply_pagination(query, page, page_size) when is_integer(page) and is_integer(page_size) do
+    offset = max(page - 1, 0) * page_size
+
+    query
+    |> limit(^page_size)
+    |> offset(^offset)
+  end
+
+  def apply_pagination(query, page, page_size) when is_binary(page) do
+    apply_pagination(query, String.to_integer(page), page_size)
+  end
+
+  def apply_pagination(query, page, page_size) when is_binary(page_size) do
+    apply_pagination(query, page, String.to_integer(page_size))
+  end
 end
