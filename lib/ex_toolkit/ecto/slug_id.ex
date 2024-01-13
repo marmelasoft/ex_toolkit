@@ -40,6 +40,7 @@ defmodule ExToolkit.Ecto.SlugID do
   defp uuid_to_slug(uuid), do: Base62UUID.encode(uuid)
 
   @impl true
+  def load(nil, _loader, _params), do: {:ok, nil}
   def load(data, _loader, _params) do
     case UUIDv7.load(data) do
       {:ok, uuid} -> {:ok, uuid_to_slug(uuid)}

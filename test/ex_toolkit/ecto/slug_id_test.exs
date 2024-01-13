@@ -61,6 +61,7 @@ defmodule ExToolkit.Ecto.SlugIDTest do
     assert SlugID.load(@test_uuid_invalid_characters, @loader, @params) == :error
     assert SlugID.load(@test_uuid_invalid_format, @loader, @params) == :error
     assert SlugID.load(@test_prefixed_uuid, @loader, @params) == :error
+    assert SlugID.load(nil, @loader, @params) == {:ok, nil}
     assert SlugID.load(@test_uuid, @loader, @belongs_to_params) == {:ok, @test_prefixed_uuid}
   end
 
