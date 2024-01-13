@@ -1,8 +1,8 @@
 # Elixir Toolkit
 
-[![hex.pm](https://img.shields.io/hexpm/v/utilx.svg)](https://hex.pm/packages/ex_toolkit)
-[![hex.pm](https://img.shields.io/hexpm/dt/utilx.svg)](https://hex.pm/packages/ex_toolkit)
-[![hex.pm](https://img.shields.io/hexpm/l/utilx.svg)](https://hex.pm/packages/ex_toolkit)
+[![hex.pm](https://img.shields.io/hexpm/v/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
+[![hex.pm](https://img.shields.io/hexpm/dt/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
+[![hex.pm](https://img.shields.io/hexpm/l/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
 [![github.com](https://img.shields.io/github/last-commit/marmelasoft/ex_toolkit.svg)](https://github.com/marmelasoft/ex_toolkit)
 
 `ExToolkit` is a collection of Elixir helpers that offers pre-built effective
