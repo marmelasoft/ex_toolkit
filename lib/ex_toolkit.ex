@@ -1,4 +1,6 @@
 defmodule ExToolkit do
+  @moduledoc File.read!("README.md") |> String.split("\n\n") |> tl() |> Enum.join("\n\n")
+
   defmacro __using__ do
     quote do
       alias ExToolkit.Bench, as: BenchUtils

@@ -17,6 +17,7 @@ defmodule ExToolkit.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       package: package(),
+      docs: docs(),
       deps: deps()
     ]
   end
@@ -31,6 +32,14 @@ defmodule ExToolkit.MixProject do
     [
       licenses: ["MIT"],
       links: %{"GitHub" => @scm_url}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md"],
+      source_ref: "v#{@version}"
     ]
   end
 

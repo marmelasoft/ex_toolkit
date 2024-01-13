@@ -1,4 +1,4 @@
-defmodule Utilx.BenchUtils do
+defmodule ExToolkit.Bench do
   @moduledoc """
   Utility for quick and simple benchmarking functions in Elixir.
   """
