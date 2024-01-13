@@ -1,4 +1,4 @@
-defmodule Utilx.GitUtils do
+defmodule ExToolkit.Git do
   @moduledoc """
   This module provides utility functions for interacting with Git.
   """

@@ -1,12 +1,12 @@
-defmodule Utilx.EctoUtils.ObjectID do
+defmodule ExToolkit.Ecto.ObjectID do
   @moduledoc """
   A Ecto type that facilitates the generation of prefixed base62 encoded UUIDv7
   for use as primary and foreign keys in Ecto schemas.
 
   ## Examples
 
-      @primary_key {:id, Utilx.EctoUtils.ObjectID, prefix: "user", autogenerate: true}
-      @foreign_key_type Utilx.EctoUtils.ObjectID
+      @primary_key {:id, ExToolkit.Ecto.ObjectID, prefix: "user", autogenerate: true}
+      @foreign_key_type ExToolkit.Ecto.ObjectID
 
   ## Resources
 
@@ -15,7 +15,7 @@ defmodule Utilx.EctoUtils.ObjectID do
   """
   use Ecto.ParameterizedType
 
-  alias Utilx.EncodeUtils.Base62UUID
+  alias ExToolkit.Encode.Base62UUID
 
   @uuid_version 7
 

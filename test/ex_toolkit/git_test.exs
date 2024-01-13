@@ -1,16 +1,16 @@
-defmodule Utilx.GitUtilsTest do
+defmodule ExToolkit.GitTest do
   use ExUnit.Case, async: true
 
-  alias Utilx.GitUtils
+  alias ExToolkit.Git
 
   describe "revision_hash/0" do
     test "returns a Git revision hash as a string in an expected format" do
       # The actual value of the revision hash will depend on your current Git state,
       # so we can't predict it easily. We can, however, make sure it's a 40-character string
       # (which is the length of a SHA-1 hash), assuming a successful Git command execution.
-      hash = GitUtils.revision_hash()
+      hash = Git.revision_hash()
       assert is_binary(hash)
-      assert Regex.match?(~r/\b[0-9a-f]{40}\b/, GitUtils.revision_hash())
+      assert Regex.match?(~r/\b[0-9a-f]{40}\b/, Git.revision_hash())
     end
 
     test "returns the exact Git revision hash in a stage git environment" do
@@ -24,7 +24,7 @@ defmodule Utilx.GitUtilsTest do
       File.cd!(git_dir_path, fn ->
         git_init_repo()
 
-        assert GitUtils.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
+        assert Git.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
       end)
     end
 
@@ -41,7 +41,7 @@ defmodule Utilx.GitUtilsTest do
 
         System.cmd("rm", ["-rf", Path.join(git_dir_path, ".git/objects")])
 
-        assert GitUtils.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
+        assert Git.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
       end)
     end
 
@@ -67,7 +67,7 @@ defmodule Utilx.GitUtilsTest do
 
         System.cmd("rm", ["-rf", Path.join(git_dir_path, ".git/objects")])
 
-        assert GitUtils.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
+        assert Git.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
       end)
     end
   end

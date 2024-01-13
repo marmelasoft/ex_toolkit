@@ -3,6 +3,6 @@ defmodule ReadmeTest do
 
   test "version in readme matches mix.exs" do
     assert File.read!(Path.join(__DIR__, "../README.md")) =~
-             ~s'{:utilx, "~> #{Mix.Project.config()[:version]}"}'
+             ~s'{:#{Mix.Project.config()[:app]}, "~> #{Mix.Project.config()[:version]}"}'
   end
 end

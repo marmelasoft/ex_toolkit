@@ -1,8 +1,8 @@
-defmodule Utils.EctoUtils.ObjectIDTest do
+defmodule ExToolkit.Ecto.ObjectIDTest do
   @moduledoc false
   use ExUnit.Case, async: true
 
-  alias Utilx.EctoUtils.ObjectID
+  alias ExToolkit.Ecto.ObjectID
   alias Uniq.UUID
 
   defmodule TestSchema do

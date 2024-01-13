@@ -1,4 +1,4 @@
-defmodule Utilx.NamingUtils do
+defmodule ExToolkit.Naming do
   @moduledoc """
   This module encapsulates common tasks related to processing personal names in
   a standardized format. This module treats names as case-insensitive and
@@ -17,25 +17,25 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-      iex> NamingUtils.shorten_firstname(nil)
+      iex> Naming.shorten_firstname(nil)
       ""
 
-      iex> NamingUtils.shorten_firstname("")
+      iex> Naming.shorten_firstname("")
       ""
 
-      iex> NamingUtils.shorten_firstname("John")
+      iex> Naming.shorten_firstname("John")
       "J."
 
-      iex> NamingUtils.shorten_firstname("john")
+      iex> Naming.shorten_firstname("john")
       "J."
 
-      iex> NamingUtils.shorten_firstname("John Doe")
+      iex> Naming.shorten_firstname("John Doe")
       "J. Doe"
 
-      iex> NamingUtils.shorten_firstname("john doe")
+      iex> Naming.shorten_firstname("john doe")
       "J. Doe"
 
-      iex> NamingUtils.shorten_firstname("john doe jr")
+      iex> Naming.shorten_firstname("john doe jr")
       "J. Doe Jr"
   """
   @spec shorten_firstname(nil | String.t()) :: String.t()
@@ -65,19 +65,19 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-      iex> NamingUtils.extract_initials(nil)
+      iex> Naming.extract_initials(nil)
       ""
 
-      iex> NamingUtils.extract_initials("")
+      iex> Naming.extract_initials("")
       ""
 
-      iex> NamingUtils.extract_initials("John")
+      iex> Naming.extract_initials("John")
       "J"
 
-      iex> NamingUtils.extract_initials("John Doe")
+      iex> Naming.extract_initials("John Doe")
       "JD"
 
-      iex> NamingUtils.extract_initials("John Nommensen Duchac")
+      iex> Naming.extract_initials("John Nommensen Duchac")
       "JD"
   """
   @spec extract_initials(nil | String.t()) :: String.t()
@@ -110,16 +110,16 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-      iex> NamingUtils.extract_first_last_name(nil)
+      iex> Naming.extract_first_last_name(nil)
       ""
 
-      iex> NamingUtils.extract_first_last_name("")
+      iex> Naming.extract_first_last_name("")
       ""
 
-      iex> NamingUtils.extract_first_last_name("john")
+      iex> Naming.extract_first_last_name("john")
       "John"
 
-      iex> NamingUtils.extract_first_last_name("john doe smith")
+      iex> Naming.extract_first_last_name("john doe smith")
       "John Smith"
   """
   @spec extract_first_last_name(nil | String.t()) :: String.t()
@@ -149,19 +149,19 @@ defmodule Utilx.NamingUtils do
 
   ## Examples
 
-      iex> NamingUtils.capitalize(nil)
+      iex> Naming.capitalize(nil)
       ""
 
-      iex> NamingUtils.capitalize("")
+      iex> Naming.capitalize("")
       ""
 
-      iex> NamingUtils.capitalize("john doe")
+      iex> Naming.capitalize("john doe")
       "John Doe"
 
-      iex> NamingUtils.capitalize("JOHN DOE")
+      iex> Naming.capitalize("JOHN DOE")
       "John Doe"
 
-      iex> NamingUtils.capitalize("john nommensen duchac")
+      iex> Naming.capitalize("john nommensen duchac")
       "John Nommensen Duchac"
   """
   @spec capitalize(nil | String.t()) :: String.t()

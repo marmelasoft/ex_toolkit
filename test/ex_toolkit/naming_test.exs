@@ -1,9 +1,9 @@
-defmodule Utilx.NamingUtilsTest do
+defmodule ExToolkit.NamingTest do
   use ExUnit.Case, async: true
 
-  alias Utilx.NamingUtils
+  alias ExToolkit.Naming
 
-  doctest NamingUtils
+  doctest Naming
 
   tests = [
     # test name, input, initials, first and last name
@@ -26,7 +26,7 @@ defmodule Utilx.NamingUtilsTest do
   describe "#extract_initials/1" do
     for {description, input, expected, _first_last_name} <- tests do
       test description do
-        assert NamingUtils.extract_initials(unquote(input)) == unquote(expected)
+        assert Naming.extract_initials(unquote(input)) == unquote(expected)
       end
     end
   end
@@ -34,7 +34,7 @@ defmodule Utilx.NamingUtilsTest do
   describe "#extract_first_last_name/1" do
     for {description, input, _initials, expected} <- tests do
       test description do
-        assert NamingUtils.extract_first_last_name(unquote(input)) == unquote(expected)
+        assert Naming.extract_first_last_name(unquote(input)) == unquote(expected)
       end
     end
   end

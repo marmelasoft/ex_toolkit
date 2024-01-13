@@ -1,10 +1,11 @@
-defmodule Utilx.EncodeUtils.Base62UUID do
+defmodule ExToolkit.Encode.Base62UUID do
   @moduledoc """
   A utility module providing functions to encode and decode UUIDs using Base62 encoding.
 
   The Base62 encoding allows representing UUIDs in a more compact form, reducing their length from 32 to 22 characters.
   This module supports converting standard UUIDs (as strings) to Base62 encoded UUIDs and vice-versa.
   """
+
   @base62_uuid_length 22
   @uuid_length 32
 
@@ -54,7 +55,7 @@ defmodule Utilx.EncodeUtils.Base62UUID do
         {:ok, "#{g1}-#{g2}-#{g3}-#{g4}-#{g5}"}
 
       other ->
-        {:error, "got invalid base62 uuid; #{inspect(other)}"}
+        {:error, "invalid base62 UUID; #{inspect(other)}"}
     end
   end
 end

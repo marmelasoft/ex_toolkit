@@ -1,4 +1,4 @@
-defmodule Utilx.EctoUtils do
+defmodule ExToolkit.Ecto do
   @moduledoc """
   A utility module for handling Ecto queries, with functions to perform common
   tasks like applying a range filter, and executing a series of query operations
@@ -32,31 +32,31 @@ defmodule Utilx.EctoUtils do
       iex> types = %{url: :string}
       iex> params = %{url: "https://www.example.com/"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      ...> |> validate_url(:url, "is not a valid url")
       #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
 
       iex> types = %{url: :string}
       iex> params = %{url: "www.example.com/"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      ...> |> validate_url(:url, "is not a valid url")
       #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
 
       iex> types = %{url: :string}
       iex> params = %{url: nil}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      ...> |> validate_url(:url, "is not a valid url")
       #Ecto.Changeset<action: nil, changes: %{}, errors: [], data: %{}, valid?: true>
 
       iex> types = %{url: :string}
       iex> params = %{url: "some@invalid_url"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      ...> |> validate_url(:url, "is not a valid url")
       #Ecto.Changeset<action: nil, changes: %{url: "https://some@invalid_url"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
 
       iex> types = %{url: :string}
       iex> params = %{url: "Just some random text"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
-      ...> |> EctoUtils.validate_url(:url, "is not a valid url")
+      ...> |> validate_url(:url, "is not a valid url")
       #Ecto.Changeset<action: nil, changes: %{url: "https://Just some random text"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
   """
   def validate_url(changeset, field, error_message) do
@@ -93,7 +93,7 @@ defmodule Utilx.EctoUtils do
   ## Examples
 
       iex> query = from(u in "users", select: u.age)
-      iex> EctoUtils.in_range(query, :age, 18..30)
+      iex> in_range(query, :age, 18..30)
       #Ecto.Query<from u0 in \"users\", where: u0.age >= ^18 and u0.age <= ^30, select: u0.age>
   """
   def in_range(query, column, min..max) do
@@ -123,7 +123,7 @@ defmodule Utilx.EctoUtils do
   ## Examples
 
       iex> query = from(u in "users")
-      iex> EctoUtils.apply_options(query, where: [age: 18], select: [:id, :email])
+      iex> apply_options(query, where: [age: 18], select: [:id, :email])
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, select: map(u0, [:id, :email])>
 
       iex> query = from(u in "users")
@@ -134,7 +134,7 @@ defmodule Utilx.EctoUtils do
       ...> {:limit, 10},
       ...> {:preload, :posts},
       ...>]
-      iex> EctoUtils.apply_options(query, filters)
+      iex> apply_options(query, filters)
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
   """
   @spec apply_options(Ecto.Queryable.t(), Keyword.t()) :: Ecto.Queryable.t()
@@ -189,15 +189,15 @@ defmodule Utilx.EctoUtils do
   ## Examples
 
       iex> query = from(u in "users", select: u.id)
-      iex> EctoUtils.apply_pagination(query, 1, 20)
+      iex> apply_pagination(query, 1, 20)
       #Ecto.Query<from u0 in "users", limit: ^20, offset: ^0, select: u0.id>
 
       iex> query = from(u in "users", select: u.id)
-      iex> EctoUtils.apply_pagination(query, "2", 20)
+      iex> apply_pagination(query, "2", 20)
       #Ecto.Query<from u0 in "users", limit: ^20, offset: ^20, select: u0.id>
 
       iex> query = from(u in "users", select: u.id)
-      iex> EctoUtils.apply_pagination(query, 4, 15)
+      iex> apply_pagination(query, 4, 15)
       #Ecto.Query<from u0 in "users", limit: ^15, offset: ^45, select: u0.id>
 
   """

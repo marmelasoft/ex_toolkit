@@ -1,11 +1,11 @@
-defmodule Utilx.MixProject do
+defmodule ExToolkit.MixProject do
   use Mix.Project
 
-  @app :utilx
-  @name "Utilx"
-  @version "0.6.4"
+  @app :ex_toolkit
+  @name "ExToolkit"
+  @version "0.7.0"
   @description "Collection of effective recipes for building Elixir applications"
-  @scm_url "https://github.com/marmelasoft/ex_utils"
+  @scm_url "https://github.com/marmelasoft/ex_toolkit"
 
   def project do
     [
@@ -40,6 +40,7 @@ defmodule Utilx.MixProject do
       {:ecto_sql, "~> 3.10"},
 
       # encoding
+      {:uuidv7, "~> 0.2.0"},
       {:uniq, "~> 0.6.0"},
       {:base62, "~> 1.2.2"},
 
