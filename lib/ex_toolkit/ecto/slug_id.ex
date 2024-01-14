@@ -8,26 +8,56 @@ defmodule ExToolkit.Ecto.SlugID do
       @primary_key {:id, ExToolkit.Ecto.SlugID, autogenerate: true}
       @foreign_key_type ExToolkit.Ecto.SlugID
   """
-  use Ecto.ParameterizedType
+  use Ecto.Type
 
   alias ExToolkit.Encode.Base62UUID
 
   @impl true
-  def init(opts), do: opts
+  def type, do: :uuid
 
   @impl true
-  def type(_params), do: :uuid
+  def cast(nil), do: {:ok, nil}
 
-  @impl true
-  def cast(nil, _params), do: {:ok, nil}
-
-  def cast(data, _params) do
-    with {:ok, _uuid} <- slug_to_uuid(data) do
-      {:ok, data}
+  def cast(slug) do
+    with {:ok, _uuid} <- slug_to_uuid(slug) do
+      {:ok, slug}
     else
       _ -> :error
     end
   end
+
+  @impl true
+  def load(nil), do: {:ok, nil}
+
+  def load(data) do
+    case UUIDv7.load(data) do
+      {:ok, uuid} -> {:ok, uuid_to_slug(uuid)}
+      :error -> :error
+    end
+  end
+
+  @impl true
+  def dump(nil), do: {:ok, nil}
+
+  def dump(slug) do
+    case slug_to_uuid(slug) do
+      {:ok, uuid} -> UUIDv7.dump(uuid)
+      :error -> :error
+    end
+  end
+
+  @impl true
+  def autogenerate() do
+    uuid_to_slug(UUIDv7.autogenerate())
+  end
+
+  def generate(), do: autogenerate()
+
+  @impl true
+  def embed_as(format), do: UUIDv7.embed_as(format)
+
+  @impl true
+  def equal?(a, b), do: UUIDv7.equal?(a, b)
 
   defp slug_to_uuid(slug) do
     with {:ok, uuid} <- Base62UUID.decode(slug) do
@@ -38,34 +68,4 @@ defmodule ExToolkit.Ecto.SlugID do
   end
 
   defp uuid_to_slug(uuid), do: Base62UUID.encode(uuid)
-
-  @impl true
-  def load(nil, _loader, _params), do: {:ok, nil}
-  def load(data, _loader, _params) do
-    case UUIDv7.load(data) do
-      {:ok, uuid} -> {:ok, uuid_to_slug(uuid)}
-      :error -> :error
-    end
-  end
-
-  @impl true
-  def dump(nil, _, _), do: {:ok, nil}
-
-  def dump(slug, _dumper, _params) do
-    case slug_to_uuid(slug) do
-      {:ok, uuid} -> UUIDv7.dump(uuid)
-      :error -> :error
-    end
-  end
-
-  @impl true
-  def autogenerate(_params) do
-    uuid_to_slug(UUIDv7.autogenerate())
-  end
-
-  @impl true
-  def embed_as(format, _params), do: UUIDv7.embed_as(format)
-
-  @impl true
-  def equal?(a, b, _params), do: UUIDv7.equal?(a, b)
 end
