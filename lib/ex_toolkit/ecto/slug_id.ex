@@ -10,6 +10,8 @@ defmodule ExToolkit.Ecto.SlugID do
   """
   use Ecto.Type
 
+  @type t :: <<_::22>>
+
   alias ExToolkit.Encode.Base62UUID
 
   @impl true
