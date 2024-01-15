@@ -17,6 +17,8 @@ defmodule ExToolkit.Ecto.ObjectID do
 
   alias ExToolkit.Encode.Base62UUID
 
+  @type t :: String.t()
+
   @uuid_version 7
 
   @type opts :: [schema: atom(), field: atom(), prefix: String.t()]
