@@ -55,7 +55,7 @@ defmodule ExToolkit.Encode.Base62UUID do
         {:ok, "#{g1}-#{g2}-#{g3}-#{g4}-#{g5}"}
 
       other ->
-        {:error, "invalid base62 UUID; #{inspect(other)}"}
+        {:error, "invalid UUID: #{inspect(other)}"}
     end
   end
 end
