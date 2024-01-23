@@ -1,13 +1,13 @@
-defmodule ExToolkit.EctoTest do
+defmodule ExToolkit.Ecto.QueryTest do
   use ExUnit.Case, async: true
 
   import ExUnit.CaptureLog
 
   import Ecto.Query
 
-  import ExToolkit.Ecto
+  import ExToolkit.Ecto.Query
 
-  doctest ExToolkit.Ecto
+  doctest ExToolkit.Ecto.Query
 
   test "if an invalid option is used a log message should be displayed" do
     assert capture_log(fn ->
