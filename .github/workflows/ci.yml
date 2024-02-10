@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+        otp: [25.x]
+        elixir: [1.13.x]
+
+    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: ☁️ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 💧 Setup Elixir ${{ matrix.elixir }} (OTP ${{matrix.otp}})
+        uses: marmelasoft/elixir-setup@main
+        with:
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+          build-flags: --all-warnings --warnings-as-errors
+        env:
+          MIX_ENV: test
+
+      - name: 🔬 Run the tests
+        run: mix test --warnings-as-errors
+        env:
+          MIX_ENV: test
+
+      - name: 🧹 Check code formating
+        run: mix format --check-formatted
+        if: always()
+
+      - name: 💡 Lint the code
+        run: mix credo --strict --all
+        if: always()

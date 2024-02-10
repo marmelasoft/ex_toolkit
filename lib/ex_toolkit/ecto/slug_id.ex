@@ -21,9 +21,8 @@ defmodule ExToolkit.Ecto.SlugID do
   def cast(nil), do: {:ok, nil}
 
   def cast(slug) do
-    with {:ok, _uuid} <- slug_to_uuid(slug) do
-      {:ok, slug}
-    else
+    case slug_to_uuid(slug) do
+      {:ok, _uuid} -> {:ok, slug}
       _ -> :error
     end
   end
@@ -49,11 +48,9 @@ defmodule ExToolkit.Ecto.SlugID do
   end
 
   @impl true
-  def autogenerate() do
-    uuid_to_slug(UUIDv7.autogenerate())
-  end
+  def autogenerate, do: uuid_to_slug(UUIDv7.autogenerate())
 
-  def generate(), do: autogenerate()
+  def generate, do: autogenerate()
 
   @impl true
   def embed_as(format), do: UUIDv7.embed_as(format)
@@ -62,9 +59,8 @@ defmodule ExToolkit.Ecto.SlugID do
   def equal?(a, b), do: UUIDv7.equal?(a, b)
 
   defp slug_to_uuid(slug) do
-    with {:ok, uuid} <- Base62UUID.decode(slug) do
-      {:ok, uuid}
-    else
+    case Base62UUID.decode(slug) do
+      {:ok, uuid} -> {:ok, uuid}
       _ -> :error
     end
   end
