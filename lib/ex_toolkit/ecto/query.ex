@@ -123,7 +123,7 @@ defmodule ExToolkit.Ecto.Query do
       #Ecto.Query<from u0 in "users", limit: ^20, offset: ^20, select: u0.id>
 
       iex> query = from(u in "users", select: u.id)
-      iex> apply_pagination(query, 4, 15)
+      iex> apply_pagination(query, 4, "15")
       #Ecto.Query<from u0 in "users", limit: ^15, offset: ^45, select: u0.id>
 
   """
