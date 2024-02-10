@@ -5,6 +5,8 @@ defmodule ExToolkit.Naming do
   returns results in a formatted, readable way.
   """
 
+  alias ExToolkit.Roman
+
   @doc """
   Shortens the first name to its initial, while preserving the rest of the name.
 
@@ -121,6 +123,21 @@ defmodule ExToolkit.Naming do
 
       iex> Naming.extract_first_last_name("john doe smith")
       "John Smith"
+
+      iex> Naming.extract_first_last_name("john doe smith jr")
+      "John Smith Jr"
+
+      iex> Naming.extract_first_last_name("john jr")
+      "John Jr"
+
+      iex> Naming.extract_first_last_name("john jose doe III")
+      "John Doe III"
+
+      iex> Naming.extract_first_last_name("john doe v")
+      "John Doe V"
+
+      iex> Naming.extract_first_last_name("Sir Alexander Chapman Ferguson")
+      "Sir Alexander Ferguson"
   """
   @spec extract_first_last_name(nil | String.t()) :: String.t()
   def extract_first_last_name(name) when is_nil(name) or name == "", do: ""
@@ -134,9 +151,29 @@ defmodule ExToolkit.Naming do
       |> Enum.map(&String.capitalize/1)
 
     case names do
-      [] -> ""
-      [first] -> first
-      [first | rest] -> first <> " " <> Enum.at(rest, -1)
+      [] ->
+        ""
+
+      [first] ->
+        first
+
+      [first | rest] ->
+        cond do
+          length(rest) == 1 ->
+            first <> " " <> Enum.at(rest, -1)
+
+          first == "Sir" ->
+            "Sir" <> " " <> Enum.at(rest, 0) <> " " <> Enum.at(rest, -1)
+
+          Enum.at(rest, -1) == "Jr" ->
+            first <> " " <> Enum.at(rest, -2) <> " Jr"
+
+          Roman.is_valid_roman(Enum.at(rest, -1)) ->
+            first <> " " <> Enum.at(rest, -2) <> " " <> String.upcase(Enum.at(rest, -1))
+
+          true ->
+            first <> " " <> Enum.at(rest, -1)
+        end
     end
   end
 
