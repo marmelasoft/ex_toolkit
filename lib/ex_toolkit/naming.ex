@@ -170,7 +170,6 @@ defmodule ExToolkit.Naming do
   def capitalize(name) do
     name
     |> String.split(" ")
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(" ")
+    |> Enum.map_join(" ", &String.capitalize/1)
   end
 end
