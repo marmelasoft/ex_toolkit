@@ -51,6 +51,7 @@ defmodule ExToolkit.Kernel do
     end)
   end
 
+  @doc false
   def typeof(a) do
     cond do
       is_float(a) -> :float
