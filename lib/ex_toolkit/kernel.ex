@@ -43,7 +43,7 @@ defmodule ExToolkit.Kernel do
             iex> #{unquote(__MODULE__)}.#{unquote(key)}()
             #{inspect(unquote(value))}
         """
-        @spec unquote(key)() :: unquote(typeof(value))()
+        @spec unquote(key)() :: unquote(type_of(value))()
         def unquote(key)() do
           @attr
         end
@@ -52,7 +52,8 @@ defmodule ExToolkit.Kernel do
   end
 
   @doc false
-  def typeof(a) do
+  # credo:disable-for-lines:16 Credo.Check.Refactor.CyclomaticComplexity
+  def type_of(a) do
     cond do
       is_float(a) -> :float
       is_integer(a) -> :integer
