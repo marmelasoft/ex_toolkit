@@ -40,7 +40,7 @@ defmodule ExToolkit.Kernel do
         Gets @#{unquote(key)}.
 
         ## Examples
-            iex> #{unquote(__MODULE__)}.#{unquote(key)}()
+            iex> #{__MODULE__}.#{unquote(key)}()
             #{inspect(unquote(value))}
         """
         @spec unquote(key)() :: unquote(type_of(value))()

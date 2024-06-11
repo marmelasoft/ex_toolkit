@@ -6,8 +6,9 @@ defmodule ExToolkit.Encode.Base62UUID do
   This module supports converting standard UUIDs (as strings) to Base62 encoded UUIDs and vice-versa.
   """
 
-  @base62_uuid_length 22
-  @uuid_length 32
+  import ExToolkit.Kernel, only: [defattr: 1]
+
+  defattr base62_uuid_length: 22, uuid_length: 32
 
   @doc """
   Encodes a UUID into a Base62 encoded string.

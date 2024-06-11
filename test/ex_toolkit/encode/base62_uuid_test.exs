@@ -3,5 +3,6 @@ defmodule ExToolkit.Encode.Base62UUIDTest do
 
   alias ExToolkit.Encode.Base62UUID
 
+  # This is also important to test ExToolkit.Kernel itself
   doctest Base62UUID
 end
