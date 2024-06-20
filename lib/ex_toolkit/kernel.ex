@@ -43,7 +43,6 @@ defmodule ExToolkit.Kernel do
             iex> #{__MODULE__}.#{unquote(key)}()
             #{inspect(unquote(value))}
         """
-        @spec unquote(key)() :: unquote(type_of(value))()
         def unquote(key)() do
           @attr
         end
