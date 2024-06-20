@@ -16,7 +16,7 @@ The package can be installed by adding `ex_toolkit` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:ex_toolkit, "~> 0.9.2"}
+    {:ex_toolkit, "~> 0.9.3"}
   ]
 end
 ```

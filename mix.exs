@@ -3,7 +3,7 @@ defmodule ExToolkit.MixProject do
 
   @app :ex_toolkit
   @name "ExToolkit"
-  @version "0.9.2"
+  @version "0.9.3"
   @description "Collection of effective recipes for building Elixir applications"
   @scm_url "https://github.com/marmelasoft/ex_toolkit"
 
