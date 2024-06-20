@@ -22,7 +22,7 @@ defmodule ExToolkit.Ecto.Query do
       iex> in_range(query, :age, 18..30)
       #Ecto.Query<from u0 in \"users\", where: u0.age >= ^18 and u0.age <= ^30, select: u0.age>
   """
-  def in_range(query, column, min..max) do
+  def in_range(query, column, min..max//_) do
     query
     |> where([row], field(row, ^column) >= ^min and field(row, ^column) <= ^max)
   end
