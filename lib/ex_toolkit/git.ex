@@ -10,13 +10,13 @@ defmodule ExToolkit.Git do
   def revision_hash do
     case System.cmd("git", ["rev-parse", "HEAD"], stderr_to_stdout: true, into: "") do
       {ref, 0} -> String.trim(ref)
-      _ -> get_git_ref()
+      _ -> get_git_ref!()
     end
   rescue
-    _ -> get_git_ref()
+    _ -> get_git_ref!()
   end
 
-  defp get_git_ref do
+  defp get_git_ref! do
     git_ref = File.read!(Path.join(".git", "HEAD"))
 
     if String.contains?(git_ref, "ref:") do

@@ -4,6 +4,60 @@ defmodule ExToolkit.Kernel do
   """
 
   @doc """
+  Returns the atom `:ok`.
+
+  ## Example
+
+      iex> ok()
+      :ok
+
+  """
+  @spec ok() :: :ok
+  def ok, do: :ok
+
+  @doc """
+  Wraps a given value in a tuple tagged with `:ok`.
+
+  ## Examples
+
+      iex> ok(42)
+      {:ok, 42}
+
+      iex> ok("hello")
+      {:ok, "hello"}
+
+  """
+  @spec ok(term()) :: {:ok, term()}
+  def ok(value), do: {:ok, value}
+
+  @doc """
+  Returns the atom `:error`.
+
+  ## Example
+
+      iex> error()
+      :error
+
+  """
+  @spec error() :: :error
+  def error, do: :error
+
+  @doc """
+  Wraps a given value in a tuple tagged with `:error`.
+
+  ## Examples
+
+      iex> error("something went wrong")
+      {:error, "something went wrong"}
+
+      iex> error(404)
+      {:error, 404}
+
+  """
+  @spec error(term()) :: {:error, term()}
+  def error(value), do: {:error, value}
+
+  @doc """
   Defines a module attribute and a function to get it. Inspired by `attr_reader`
   from ruby.
 
@@ -50,22 +104,80 @@ defmodule ExToolkit.Kernel do
     end)
   end
 
-  @doc false
-  # credo:disable-for-lines:16 Credo.Check.Refactor.CyclomaticComplexity
-  def type_of(a) do
-    cond do
-      is_float(a) -> :float
-      is_integer(a) -> :integer
-      is_number(a) -> :number
-      is_boolean(a) -> :boolean
-      is_atom(a) -> :atom
-      is_binary(a) -> :binary
-      is_list(a) -> :list
-      is_tuple(a) -> :tuple
-      is_struct(a) -> :struct
-      is_map(a) -> :map
-      is_function(a) -> :function
-      true -> :term
-    end
-  end
+  @type type ::
+          nil
+          | :float
+          | :integer
+          | :boolean
+          | :atom
+          | :binary
+          | :list
+          | :tuple
+          | :exception
+          | :struct
+          | :map
+          | :function
+          | :pid
+          | :term
+
+  @doc """
+  Determines the type of the given term.
+
+  ## Examples
+
+      iex> type_of(3.14)
+      :float
+
+      iex> type_of(42)
+      :integer
+
+      iex> type_of(true)
+      :boolean
+
+      iex> type_of(:atom)
+      :atom
+
+      iex> type_of("string")
+      :binary
+
+      iex> type_of([1, 2, 3])
+      :list
+
+      iex> type_of({:ok, 1})
+      :tuple
+
+      iex> type_of(%{})
+      :map
+
+      iex> type_of(fn -> :ok end)
+      :function
+
+      iex> type_of(%URI{})
+      :struct
+
+      iex> type_of(%RuntimeError{})
+      :exception
+
+      iex> type_of(self())
+      :pid
+
+      iex> type_of(nil)
+      nil
+
+  """
+  @spec type_of(term()) :: type()
+  def type_of(a) when is_nil(a), do: nil
+  def type_of(a) when is_float(a), do: :float
+  def type_of(a) when is_integer(a), do: :integer
+  def type_of(a) when is_boolean(a), do: :boolean
+  def type_of(a) when is_atom(a), do: :atom
+  def type_of(a) when is_binary(a), do: :binary
+  def type_of(a) when is_list(a), do: :list
+  def type_of(a) when is_tuple(a), do: :tuple
+  def type_of(a) when is_exception(a), do: :exception
+  def type_of(a) when is_struct(a), do: :struct
+  def type_of(a) when is_map(a), do: :map
+  def type_of(a) when is_function(a), do: :function
+  def type_of(a) when is_pid(a), do: :pid
+  def type_of(_), do: :term
 end
