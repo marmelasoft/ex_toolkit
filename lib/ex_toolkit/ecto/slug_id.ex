@@ -10,46 +10,52 @@ defmodule ExToolkit.Ecto.SlugID do
   """
   use Ecto.Type
 
-  @type t :: <<_::22>>
+  @type t :: binary()
 
   alias ExToolkit.Encode.Base62UUID
 
   @impl true
+  @spec type() :: :uuid
   def type, do: :uuid
 
   @impl true
+  @spec cast(nil | t()) :: :error | {:ok, nil | t()}
   def cast(nil), do: {:ok, nil}
 
   def cast(slug) do
-    case slug_to_uuid(slug) do
+    case from_slug(slug) do
       {:ok, _uuid} -> {:ok, slug}
       _ -> :error
     end
   end
 
   @impl true
+  @spec load(any()) :: :error | {:ok, nil | t()}
   def load(nil), do: {:ok, nil}
 
   def load(data) do
     case UUIDv7.load(data) do
-      {:ok, uuid} -> {:ok, uuid_to_slug(uuid)}
+      {:ok, uuid} -> {:ok, to_slug(uuid)}
       :error -> :error
     end
   end
 
   @impl true
+  @spec dump(nil | t()) :: :error | {:ok, nil | <<_::128>>}
   def dump(nil), do: {:ok, nil}
 
   def dump(slug) do
-    case slug_to_uuid(slug) do
+    case from_slug(slug) do
       {:ok, uuid} -> UUIDv7.dump(uuid)
       :error -> :error
     end
   end
 
   @impl true
-  def autogenerate, do: uuid_to_slug(UUIDv7.autogenerate())
+  @spec autogenerate() :: t()
+  def autogenerate, do: to_slug(UUIDv7.autogenerate())
 
+  @spec generate() :: t()
   def generate, do: autogenerate()
 
   @impl true
@@ -58,12 +64,12 @@ defmodule ExToolkit.Ecto.SlugID do
   @impl true
   def equal?(a, b), do: UUIDv7.equal?(a, b)
 
-  defp slug_to_uuid(slug) do
+  defp from_slug(slug) do
     case Base62UUID.decode(slug) do
       {:ok, uuid} -> {:ok, uuid}
       _ -> :error
     end
   end
 
-  defp uuid_to_slug(uuid), do: Base62UUID.encode(uuid)
+  defp to_slug(uuid), do: Base62UUID.encode(uuid)
 end
