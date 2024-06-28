@@ -58,6 +58,21 @@ defmodule ExToolkit.Kernel do
   def error(value), do: {:error, value}
 
   @doc """
+  Wraps a given value in a tuple tagged with `:noreply`.
+
+  ## Examples
+
+      iex> noreply("something went wrong")
+      {:noreply, "something went wrong"}
+
+      iex> noreply(404)
+      {:noreply, 404}
+
+  """
+  @spec noreply(term()) :: {:noreply, term()}
+  def noreply(value), do: {:noreply, value}
+
+  @doc """
   Defines a module attribute and a function to get it. Inspired by `attr_reader`
   from ruby.
 
