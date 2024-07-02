@@ -126,17 +126,42 @@ defmodule ExToolkit.Naming do
   def extract_first_last_name(name) when is_nil(name) or name == "", do: ""
 
   def extract_first_last_name(name) do
-    names =
-      name
-      |> String.trim()
-      |> String.split(" ")
-      |> Stream.filter(&String.match?(String.slice(&1, 0, 1), ~r/^\p{L}$/u))
-      |> Enum.map(&String.capitalize/1)
-
-    case names do
+    case to_list_of_names(name) do
       [] -> ""
       [first] -> first
       [first | rest] -> first <> " " <> Enum.at(rest, -1)
+    end
+  end
+
+  @doc """
+  Extracts and capitalizes the first and last names and then shortens the first name from a given name and.
+
+  ## Parameters
+
+  - `name`: A string representing a full name, or `nil`.
+
+  ## Examples
+
+      iex> Naming.extract_short_name(nil)
+      ""
+
+      iex> Naming.extract_short_name("")
+      ""
+
+      iex> Naming.extract_short_name("john")
+      "John"
+
+      iex> Naming.extract_short_name("john doe smith")
+      "J. Smith"
+  """
+  @spec extract_short_name(nil | String.t()) :: String.t()
+  def extract_short_name(name) when is_nil(name) or name == "", do: ""
+
+  def extract_short_name(name) do
+    case to_list_of_names(name) do
+      [] -> ""
+      [first] -> first
+      [first | rest] -> shorten_firstname(first) <> " " <> Enum.at(rest, -1)
     end
   end
 
@@ -171,5 +196,13 @@ defmodule ExToolkit.Naming do
     name
     |> String.split(" ")
     |> Enum.map_join(" ", &String.capitalize/1)
+  end
+
+  defp to_list_of_names(name) do
+    name
+    |> String.trim()
+    |> String.split(" ")
+    |> Stream.filter(&String.match?(String.slice(&1, 0, 1), ~r/^\p{L}$/u))
+    |> Enum.map(&String.capitalize/1)
   end
 end
