@@ -7,6 +7,15 @@ defmodule ExToolkit.Ecto.Query do
 
   import Ecto.Query
 
+  @type options ::
+          [
+            {:where, term()},
+            {:select, term()},
+            {:order_by, term()},
+            {:limit, integer()},
+            {:preload, term() | [term()]}
+          ]
+
   @doc """
   Filters a query to only include rows where the specified column's value is within a provided range.
 
@@ -63,7 +72,7 @@ defmodule ExToolkit.Ecto.Query do
       iex> apply_options(query, filters)
       #Ecto.Query<from u0 in "users", where: u0.age == ^18, order_by: [desc: u0.age], limit: ^10, select: map(u0, [:id, :email]), preload: [:posts]>
   """
-  @spec apply_options(Ecto.Queryable.t(), Keyword.t()) :: Ecto.Queryable.t()
+  @spec apply_options(Ecto.Queryable.t(), options()) :: Ecto.Queryable.t()
   def apply_options(query, opts) when is_list(opts) do
     Enum.reduce(opts, query, fn
       {:where, filters}, query ->
@@ -88,7 +97,7 @@ defmodule ExToolkit.Ecto.Query do
     end)
   end
 
-  @spec sanitize_options(Keyword.t()) :: Keyword.t()
+  @spec sanitize_options(options()) :: options()
   def sanitize_options(opts) when is_list(opts),
     do: Keyword.take(opts, [:where, :select, :order_by, :limit, :preload])
 
