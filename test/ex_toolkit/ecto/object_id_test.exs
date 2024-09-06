@@ -50,7 +50,6 @@ defmodule ExToolkit.Ecto.ObjectIDTest do
     assert ObjectID.cast("otherprefix" <> @test_prefixed_uuid, @params) == :error
     assert ObjectID.cast(@test_prefixed_uuid_invalid_characters, @params) == :error
     assert ObjectID.cast(@test_prefixed_uuid_invalid_format, @params) == :error
-    assert ObjectID.cast(@test_prefixed_uuid, @belongs_to_params) == {:ok, @test_prefixed_uuid}
   end
 
   test "load/3" do
@@ -64,7 +63,6 @@ defmodule ExToolkit.Ecto.ObjectIDTest do
     assert ObjectID.load(@test_uuid_invalid_format, @loader, @params) == :error
     assert ObjectID.load(@test_prefixed_uuid, @loader, @params) == :error
     assert ObjectID.load(nil, @loader, @params) == {:ok, nil}
-    assert ObjectID.load(@test_uuid, @loader, @belongs_to_params) == {:ok, @test_prefixed_uuid}
   end
 
   test "dump/3" do

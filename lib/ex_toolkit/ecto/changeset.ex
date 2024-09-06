@@ -28,31 +28,31 @@ defmodule ExToolkit.Ecto.Changeset do
       iex> params = %{url: "https://www.example.com/"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
       ...> |> validate_url(:url, "is not a valid url")
-      #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
+      #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true, ...>
 
       iex> types = %{url: :string}
       iex> params = %{url: "www.example.com/"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
       ...> |> validate_url(:url, "is not a valid url")
-      #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true>
+      #Ecto.Changeset<action: nil, changes: %{url: "https://www.example.com/"}, errors: [], data: %{}, valid?: true, ...>
 
       iex> types = %{url: :string}
       iex> params = %{url: nil}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
       ...> |> validate_url(:url, "is not a valid url")
-      #Ecto.Changeset<action: nil, changes: %{}, errors: [], data: %{}, valid?: true>
+      #Ecto.Changeset<action: nil, changes: %{}, errors: [], data: %{}, valid?: true, ...>
 
       iex> types = %{url: :string}
       iex> params = %{url: "some@invalid_url"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
       ...> |> validate_url(:url, "is not a valid url")
-      #Ecto.Changeset<action: nil, changes: %{url: "https://some@invalid_url"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
+      #Ecto.Changeset<action: nil, changes: %{url: "https://some@invalid_url"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false, ...>
 
       iex> types = %{url: :string}
       iex> params = %{url: "Just some random text"}
       iex> Ecto.Changeset.cast({%{}, types}, params, Map.keys(types))
       ...> |> validate_url(:url, "is not a valid url")
-      #Ecto.Changeset<action: nil, changes: %{url: "https://Just some random text"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false>
+      #Ecto.Changeset<action: nil, changes: %{url: "https://Just some random text"}, errors: [url: {"is not a valid url", [validation: :format]}], data: %{}, valid?: false, ...>
   """
   def validate_url(changeset, field, error_message) do
     changeset
