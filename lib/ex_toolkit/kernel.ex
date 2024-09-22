@@ -73,6 +73,45 @@ defmodule ExToolkit.Kernel do
   def noreply(value), do: {:noreply, value}
 
   @doc """
+  Validates the given options against the given defaults.
+
+  ## Examples
+
+      iex> validate_opts!([foo: :bar], [foo: :baz])
+      %{foo: :bar}
+
+      iex> validate_opts!([], [foo: :baz])
+      %{foo: :baz}
+
+      iex> validate_opts!([foo: :bar, bar: :baz], %{foo: :bar})
+      ** (ArgumentError) unknown keys [:bar] in [foo: :bar, bar: :baz], the allowed keys are: [:foo]
+
+      iex> validate_opts!(%{foo: :bar, bar: :baz}, %{foo: :bar, bar: :baz})
+      %{foo: :bar, bar: :baz}
+
+      iex> validate_opts!(%{foo: :bar}, [foo: :bar])
+      %{foo: :bar}
+
+      iex> validate_opts!(%{foo: :bar}, [foo: :baz, bar: :zad])
+      %{foo: :bar, bar: :zad}
+
+  """
+  @spec validate_opts!(keyword() | map(), keyword() | map()) :: keyword()
+  def validate_opts!(opts, defaults) when is_map(opts) do
+    validate_opts!(Keyword.new(opts), defaults)
+  end
+
+  def validate_opts!(opts, defaults) when is_map(defaults) do
+    validate_opts!(opts, Keyword.new(defaults))
+  end
+
+  def validate_opts!(opts, defaults) do
+    opts
+    |> Keyword.validate!(defaults)
+    |> Map.new()
+  end
+
+  @doc """
   Defines a module attribute and a function to get it. Inspired by `attr_reader`
   from ruby.
 
