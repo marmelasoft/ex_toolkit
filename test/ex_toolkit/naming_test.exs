@@ -38,4 +38,10 @@ defmodule ExToolkit.NamingTest do
       end
     end
   end
+
+  describe "extract_short_name/1" do
+    test "special caracters are completly ignored" do
+      assert Naming.extract_short_name("()&12[]%,.!@#$%^&*()_+{}|:;") == ""
+    end
+  end
 end
