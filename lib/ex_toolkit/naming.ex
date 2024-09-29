@@ -153,6 +153,9 @@ defmodule ExToolkit.Naming do
 
       iex> Naming.extract_short_name("john doe smith")
       "J. Smith"
+
+      iex> Naming.extract_short_name("()&12[]%,.!@#$%^&*()_+{}|:;")
+      ""
   """
   @spec extract_short_name(nil | String.t()) :: String.t()
   def extract_short_name(name) when is_nil(name) or name == "", do: ""
