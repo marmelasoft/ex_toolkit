@@ -60,7 +60,7 @@ defmodule ExToolkit.MixProject do
       {:ecto_sql, "~> 3.10"},
 
       # encoding
-      {:uuidv7, "~> 0.2.0"},
+      {:uuidv7, "~> 1.0.0"},
       {:uniq, "~> 0.6.0"},
       {:base62, "~> 1.2.2"},
 
