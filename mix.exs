@@ -14,7 +14,7 @@ defmodule ExToolkit.MixProject do
       description: @description,
       version: @version,
       source_url: @scm_url,
-      elixir: "~> 1.13",
+      elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
       package: package(),
       docs: docs(),
