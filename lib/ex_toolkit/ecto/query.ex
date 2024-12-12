@@ -7,14 +7,13 @@ defmodule ExToolkit.Ecto.Query do
 
   import Ecto.Query
 
-  @type options ::
-          [
-            {:where, term()},
-            {:select, term()},
-            {:order_by, term()},
-            {:limit, integer()},
-            {:preload, term() | [term()]}
-          ]
+  @type option ::
+          {:where, term()}
+          | {:select, term()}
+          | {:order_by, term()}
+          | {:limit, integer()}
+          | {:preload, term() | [term()]}
+  @type options :: list(option())
 
   @doc """
   Filters a query to only include rows where the specified column's value is within a provided range.
