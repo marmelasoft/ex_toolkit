@@ -11,7 +11,7 @@ defmodule ExToolkit.Naming do
   This function takes a name (a string of one or more words), and reduces the first name to its initial.
   The rest of the name is preserved. The initial is followed by a period and a space, and then the rest of the name.
 
-  ## Parameters
+  ## Arguments
 
   - `name`: A string representing a full name, or `nil`.
 
@@ -59,7 +59,7 @@ defmodule ExToolkit.Naming do
   This function takes a name (a string of one or more words), and extracts the
   first letter of the first name and the family name.
 
-  ## Parameters
+  ## Arguments
 
   - `name`: A string representing a full name, or `nil`.
 
@@ -104,7 +104,7 @@ defmodule ExToolkit.Naming do
   @doc """
   Extracts and capitalizes the first and last names from a given name.
 
-  ## Parameters
+  ## Arguments
 
   - `name`: A string representing a full name, or `nil`.
 
@@ -136,7 +136,7 @@ defmodule ExToolkit.Naming do
   @doc """
   Extracts and capitalizes the first and last names and then shortens the first name from a given name and.
 
-  ## Parameters
+  ## Arguments
 
   - `name`: A string representing a full name, or `nil`.
 
@@ -171,7 +171,7 @@ defmodule ExToolkit.Naming do
   @doc """
   Capitalizes the first letter of each word in a name.
 
-  ## Parameters
+  ## Arguments
 
   - `name`: A string representing a full name, or `nil`.
 
