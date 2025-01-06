@@ -96,7 +96,7 @@ defmodule ExToolkit.Kernel do
       %{foo: :bar, bar: :zad}
 
   """
-  @spec validate_opts!(keyword() | map(), keyword() | map()) :: keyword()
+  @spec validate_opts!(keyword() | map(), keyword() | map()) :: map()
   def validate_opts!(opts, defaults) when is_map(opts) do
     validate_opts!(Keyword.new(opts), defaults)
   end
