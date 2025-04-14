@@ -1,9 +1,46 @@
 defmodule ExToolkit.Ecto.Paginator do
+  @moduledoc """
+  Provides functionality for paginating Ecto queries. It offers a simple and
+  flexible way to paginate large result sets, supporting both default and
+  custom pagination options.
+
+  ## Usage
+
+  To use this paginator in your module, you call `use ExToolkit.Ecto.Paginator`.
+
+      defmodule MyApp.Repo do
+        use Ecto.Repo, otp_app: :my_app
+        use ExToolkit.Ecto.Paginator
+      end
+
+  The default page size is 25 but you can override it by passing a `page_size`.
+
+      defmodule MyApp.Repo do
+        use Ecto.Repo, otp_app: :my_app
+        use ExToolkit.Ecto.Paginator, page_size: 30
+      end
+
+  ### Use without macros
+
+  If you wish to avoid use of macros or you wish to use a different name for
+  the pagination function you can define your own function like so:
+
+      defmodule MyApp.Repo do
+        use Ecto.Repo, otp_app: :my_app
+
+        def my_paginate_function(queryable, page, opts \\\\ [], repo_opts \\\\ []) do
+          defaults = [page_size: 12] # Default options of your choice here
+          opts = Keyword.merge(defaults, opts)
+          ExToolkit.Ecto.Paginator.paginate(queryable, __MODULE__, page, opts, repo_opts)
+        end
+      end
+  """
   import Ecto.Query, only: [exclude: 2]
   import ExToolkit.Ecto.Query, only: [apply_pagination: 3]
   import ExToolkit.Kernel, only: [validate_opts!: 2]
 
   @max_page_size 100
+  @default_page_size 25
 
   defmacro __using__(opts \\ []) do
     quote do
@@ -42,9 +79,32 @@ defmodule ExToolkit.Ecto.Paginator do
           is_last_page: boolean()
         }
 
+  @doc """
+  Paginates an Ecto query and returns a map with pagination metadata.
+
+  ## Arguments
+
+  - `queryable`: The Ecto queryable (e.g., `Repo.all(User)`).
+  - `repo`: The repository to execute the query.
+  - `page`: The page number to fetch (starts at 1).
+  - `opts`: A keyword list of options, including the `:page_size` option (default is #{@default_page_size}).
+  - `repo_opts`: Ecto-specific options, see [ecto docs](https://hexdocs.pm/ecto/Ecto.Repo.html#c:all/2-options) to learn about all available options.
+
+  ## Returns
+
+  A map containing the following keys:
+  - `:data` - The list of items for the current page.
+  - `:current_page` - The current page number.
+  - `:total_count` - The total number of items in the query.
+  - `:total_pages` - The total number of pages based on the page size.
+  - `:has_next_page` - Whether there is a next page.
+  - `:has_prev_page` - Whether there is a previous page.
+  - `:is_first_page` - Whether the current page is the first page.
+  - `:is_last_page` - Whether the current page is the last page.
+  """
   @spec paginate(Ecto.Queryable.t(), Ecto.Repo.t(), pos_integer(), options(), keyword()) :: page()
   def paginate(queryable, repo, page, opts \\ [], repo_opts \\ []) do
-    %{page_size: page_size} = validate_opts!(opts, page_size: 25)
+    %{page_size: page_size} = validate_opts!(opts, page_size: @default_page_size)
     page_size = sanitize_page_size(page_size)
     current_page = sanitize_page(page)
 
