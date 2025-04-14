@@ -15,6 +15,7 @@ defmodule ExToolkit.MixProject do
       version: @version,
       source_url: @scm_url,
       elixir: "~> 1.18",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       package: package(),
       docs: docs(),
@@ -24,6 +25,9 @@ defmodule ExToolkit.MixProject do
       preferred_cli_env: [check: :test]
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   def application do
     [
@@ -57,7 +61,8 @@ defmodule ExToolkit.MixProject do
   defp deps do
     [
       # databases
-      {:ecto_sql, "~> 3.10"},
+      {:ecto_sql, "~> 3.10", optional: true},
+      {:ecto_sqlite3, "~> 0.13.0", only: :test},
 
       # encoding
       {:uuidv7, "~> 1.0.0"},
@@ -80,6 +85,7 @@ defmodule ExToolkit.MixProject do
       "lint.dialyzer": ["dialyzer --format dialyxir --quiet"],
       "lint.sobelow": ["sobelow --threshold high"],
       lint: ["lint.dialyzer", "lint.credo", "lint.sobelow"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       check: [
         "hex.audit",
         "clean",
