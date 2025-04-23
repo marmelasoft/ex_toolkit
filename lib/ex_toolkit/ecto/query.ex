@@ -96,7 +96,7 @@ defmodule ExToolkit.Ecto.Query do
     end)
   end
 
-  @spec sanitize_options(options()) :: options()
+  @spec sanitize_options(keyword()) :: options()
   def sanitize_options(opts) when is_list(opts),
     do: Keyword.take(opts, [:where, :select, :order_by, :limit, :preload])
 
