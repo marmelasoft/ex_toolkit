@@ -5,9 +5,7 @@ defmodule ExToolkit.UiAvatars do
 
   import ExToolkit.Kernel, only: [validate_opts!: 2]
 
-  alias ExToolkit.Gravatar
-
-  @base_url "https://ui-avatars.com/api"
+  @base_url "https://ui-avatars.com/api/"
 
   @type options :: %{
           optional(:size) => pos_integer(),
@@ -41,10 +39,10 @@ defmodule ExToolkit.UiAvatars do
   ## Examples
 
       iex> UiAvatars.url(%{name: "Jane Doe", size: 128, rounded: true, format: "png", font_size: 1})
-      "https://ui-avatars.com/api?name=Jane+Doe&size=128&format=png&font-size=1&rounded=true"
+      "https://ui-avatars.com/api/?name=Jane+Doe&size=128&format=png&font-size=1&rounded=true"
 
       iex> UiAvatars.url(%{name: "Elixir", color: "ffffff", background: "000000", uppercase: false, bold: true})
-      "https://ui-avatars.com/api?name=Elixir&size=256&format=svg&uppercase=false&color=ffffff&font-size=0.5&background=000000&bold=true"
+      "https://ui-avatars.com/api/?name=Elixir&size=256&format=svg&uppercase=false&color=ffffff&font-size=0.5&background=000000&bold=true"
 
   """
   @spec url(options()) :: String.t()
@@ -63,7 +61,6 @@ defmodule ExToolkit.UiAvatars do
         format: "svg"
       ])
 
-
     @base_url
     |> URI.merge("?#{encode_query(opts)}")
     |> URI.to_string()
@@ -76,51 +73,41 @@ defmodule ExToolkit.UiAvatars do
     |> URI.encode_query()
   end
 
-  @subdirectories [
-    :name,
-    :size,
-    :background,
-    :color,
-    :length,
-    :font_size,
-    :rounded,
-    :uppercase,
-    :bold,
-    :format
-  ]
-
   @doc """
   Generates a Gravatar-compatible avatar URL that falls back to a UI Avatars image
   if the user has no Gravatar. For all supported options, see `url/1`.
 
   ## Examples
 
-      iex> UiAvatars.gravatar_safe_url("john@example.com", name: "Jane Doe", background: "000000", color: "ffffff", rounded: true)
-      "https://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJane%2BDoe%2F256%2F000000%2Fffffff%2F2%2F0.5%2Ftrue%2Ftrue%2Ffalse%2Fsvg&s=256&r=g"
+      iex> UiAvatars.gravatar_safe_url("john@example.com", name: "Jane Doe", background: "000000", color: "ffffff")
+      "https://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?size=256&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJane+Doe/256/000000/ffffff/2"
   """
   @spec gravatar_safe_url(String.t(), options()) :: String.t()
   def gravatar_safe_url(email, opts \\ %{}) do
     opts =
       validate_opts!(opts, [
         :name,
-        length: 2,
-        rounded: false,
-        bold: false,
-        background: "f0e9e9",
-        color: "8b5d5d",
-        uppercase: true,
         size: 256,
-        font_size: 0.5,
-        format: "svg"
+        length: 2,
+        background: "f0e9e9",
+        color: "8b5d5d"
       ])
 
     options = %{
-      size: opts[:size],
-      default: @base_url <> "/" <> build_directories_url(opts)
+      default: URI.encode_www_form(@base_url) <> build_directories_url(opts)
     }
 
-    Gravatar.avatar_url(email, options)
+    "https://www.gravatar.com/avatar/#{encode_email(email)}?size=#{opts[:size]}&d=#{options[:default]}"
   end
+
+
+  @subdirectories [
+    :name,
+    :size,
+    :background,
+    :color,
+    :length
+  ]
 
   defp build_directories_url(opts) do
     Enum.map_join(@subdirectories, "/", fn
@@ -132,5 +119,13 @@ defmodule ExToolkit.UiAvatars do
       key ->
         Map.get(opts, key)
     end)
+  end
+
+  defp encode_email(email) do
+    email
+    |> String.trim()
+    |> String.downcase()
+    |> then(&:crypto.hash(:md5, &1))
+    |> Base.encode16(case: :lower)
   end
 end
