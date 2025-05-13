@@ -7,6 +7,14 @@ defmodule ExToolkit.Gravatar do
 
   import ExToolkit.Kernel, only: [validate_opts!: 2]
 
+  @type avatar_options :: %{
+          optional(:size) => pos_integer(),
+          optional(:default) => String.t(),
+          optional(:rating) => String.t(),
+          optional(:initials) => String.t(),
+          optional(:name) => String.t()
+        }
+
   @doc """
   Generates a Gravatar image URL for the given email address.
 
@@ -32,7 +40,8 @@ defmodule ExToolkit.Gravatar do
       iex> avatar_url("john@example.com", default: "https://example.com/avatar.png")
       "https://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?d=https%3A%2F%2Fexample.com%2Favatar.png&s=256&r=g"
   """
-  def avatar_url(email, opts \\ []) do
+  @spec avatar_url(String.t(), avatar_options()) :: String.t()
+  def avatar_url(email, opts \\ %{}) do
     opts = validate_opts!(opts, [:name, :initials, size: 256, default: "mm", rating: "g"])
 
     "https://www.gravatar.com/avatar/#{encode_email(email)}"
@@ -48,11 +57,11 @@ defmodule ExToolkit.Gravatar do
     |> Base.encode16(case: :lower)
   end
 
-  @key_aliases [default: :d, size: :s, rating: :r]
+  @key_aliases %{default: :d, size: :s, rating: :r}
 
   defp encode_query(opts) do
     opts
-    |> Enum.map(fn {k, v} -> {Keyword.get(@key_aliases, k, k), v} end)
+    |> Enum.map(fn {k, v} -> {Map.get(@key_aliases, k, k), v} end)
     |> URI.encode_query()
   end
 end
