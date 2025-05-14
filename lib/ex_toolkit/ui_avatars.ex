@@ -80,7 +80,10 @@ defmodule ExToolkit.UiAvatars do
   ## Examples
 
       iex> UiAvatars.gravatar_safe_url("john@example.com", name: "Jane Doe", background: "000000", color: "ffffff")
-      "https://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?size=256&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJane+Doe/256/000000/ffffff/2/0.5"
+      "https://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?size=256&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJane+Doe/256/000000/ffffff/2/0.5/false/true/false/png"
+
+      iex> UiAvatars.gravatar_safe_url("john@example.com", name: "João Oliveira", length: 3, font_size: 0.4)
+      "https://www.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?size=256&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJo%C3%A3o+Oliveira/256/f0e9e9/8b5d5d/3/0.4/false/true/false/png"
   """
   @spec gravatar_safe_url(String.t(), options()) :: String.t()
   def gravatar_safe_url(email, opts \\ %{}) do
@@ -91,7 +94,11 @@ defmodule ExToolkit.UiAvatars do
         length: 2,
         background: "f0e9e9",
         color: "8b5d5d",
-        font_size: 0.5
+        font_size: 0.5,
+        rounded: false,
+        uppercase: true,
+        bold: false,
+        format: "png"
       ])
 
     options = %{
@@ -101,14 +108,17 @@ defmodule ExToolkit.UiAvatars do
     "https://www.gravatar.com/avatar/#{encode_email(email)}?size=#{opts[:size]}&d=#{options[:default]}"
   end
 
-
   @subdirectories [
     :name,
     :size,
     :background,
     :color,
     :length,
-    :font_size
+    :font_size,
+    :rounded,
+    :uppercase,
+    :bold,
+    :format
   ]
 
   defp build_directories_url(opts) do
