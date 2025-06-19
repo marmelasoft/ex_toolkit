@@ -13,8 +13,14 @@ defmodule ExToolkit.GitTest do
       assert Regex.match?(~r/\b[0-9a-f]{40}\b/, Git.revision_hash())
     end
 
-    @tag :tmp_dir
-    test "returns the exact Git revision hash in a stage git environment", %{tmp_dir: git_dir_path} do
+    test "returns the exact Git revision hash in a stage git environment" do
+      git_dir_path = Path.join(System.tmp_dir!(), "test-repo-dir")
+      System.cmd("mkdir", ["-p", git_dir_path])
+
+      on_exit(fn ->
+        System.cmd("rm", ["-rf", git_dir_path])
+      end)
+
       File.cd!(git_dir_path, fn ->
         git_init_repo()
 
@@ -22,19 +28,31 @@ defmodule ExToolkit.GitTest do
       end)
     end
 
-    @tag :tmp_dir
-    test "returns the exact Git revision hash from `.git/HEAD` when only ref is accessible", %{tmp_dir: git_dir_path} do
+    test "returns the exact Git revision hash from `.git/HEAD` when only ref is accessible" do
+      git_dir_path = Path.join(System.tmp_dir!(), "test-deploy-dir")
+      System.cmd("mkdir", ["-p", git_dir_path])
+
+      on_exit(fn ->
+        System.cmd("rm", ["-rf", git_dir_path])
+      end)
+
       File.cd!(git_dir_path, fn ->
         git_init_repo()
 
         System.cmd("rm", ["-rf", Path.join(git_dir_path, ".git/objects")])
 
-        assert Git.revision_hash() == "e9fb75a2e9ca5958dd4d5a7898f5d8efe756b48f"
+        assert Git.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
       end)
     end
 
-    @tag :tmp_dir
-    test "returns the exact Git revision hash from `.git/HEAD` when repo is not accessible", %{tmp_dir: git_dir_path} do
+    test "returns the exact Git revision hash from `.git/HEAD` when repo is not accessible" do
+      git_dir_path = Path.join(System.tmp_dir!(), "test-checkout-dir")
+      System.cmd("mkdir", ["-p", git_dir_path])
+
+      on_exit(fn ->
+        System.cmd("rm", ["-rf", git_dir_path])
+      end)
+
       File.cd!(git_dir_path, fn ->
         git_init_repo()
 
@@ -49,7 +67,7 @@ defmodule ExToolkit.GitTest do
 
         System.cmd("rm", ["-rf", Path.join(git_dir_path, ".git/objects")])
 
-        assert Git.revision_hash() == "e9fb75a2e9ca5958dd4d5a7898f5d8efe756b48f"
+        assert Git.revision_hash() == "12d5a410f53ce5e605364eab95d7d8b246b1d4af"
       end)
     end
   end
