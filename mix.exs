@@ -62,7 +62,7 @@ defmodule ExToolkit.MixProject do
     [
       # databases
       {:ecto_sql, "~> 3.10", optional: true},
-      {:ecto_sqlite3, "~> 0.13.0", only: :test},
+      {:ecto_sqlite3, "~> 0.19.0", only: :test},
 
       # encoding
       {:uuidv7, "~> 1.0.0"},

@@ -67,6 +67,8 @@ save_version() {
   local new_version="${1:?"A new version is required!"}"
 
   echo "${new_version}" > VERSION
+
+  sed -i 's/\({:ex_toolkit, "~> \)[0-9]\+\.[0-9]\+\.[0-9]\+\("}\)/\1${new_version}\2/g' README.md
 }
 
 if not_installed mix; then
