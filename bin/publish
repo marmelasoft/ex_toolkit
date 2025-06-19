@@ -105,7 +105,9 @@ case ${1:-dev} in
       log_info "Releasing version v${new_version} (previous v${current_version})"
       ensure_confirmation
       save_version "${new_version}"
+      mix test
       git commit -sam "Release ${new_version}"
+      mix hex.publish --yes
       git tag -s -a "v${new_version}" -m "Version ${new_version}"
       log_success "You can now push the changes to the remote repository."
     ;;
