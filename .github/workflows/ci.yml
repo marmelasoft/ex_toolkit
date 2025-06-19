@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 💧 Setup Elixir ${{ matrix.elixir }} (OTP ${{matrix.otp}})
-        uses: marmelasoft/elixir-setup@main
+        uses: marmelasoft/elixir-setup@v2
         with:
           version-file: .tool-versions
           version-type: strict

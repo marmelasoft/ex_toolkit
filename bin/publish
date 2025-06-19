@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
+cd "${BASE_DIR}/.." || exit 127
+
+# shellcheck source=../scripts/helpers.sh
+. scripts/helpers.sh
+# shellcheck source=../scripts/logging.sh
+. scripts/logging.sh
+# shellcheck source=../scripts/utils.sh
+. scripts/utils.sh
+
+PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
+VERSION=0.16.0
+
+function display_help() {
+  cat <<EOF
+  $(help_title_section Usage)
+    ${PROGRAM} [options] (major|minor|patch)
+
+  $(help_title_section Options)
+    -h --help         Show this screen.
+    -v --version      Show version.
+EOF
+}
+
+get_current_version() {
+  mix run -e "IO.puts Mix.Project.config()[:version]"
+}
+
+increment_version() {
+  local -r current_version=${1:?"Current version is required!"}
+
+  local major=$(echo "$current_version" | cut -d'.' -f 1)
+  local minor=$(echo "$current_version" | cut -d'.' -f 2)
+  local patch=$(echo "$current_version" | cut -d'.' -f 3)
+
+  if [ -z "${major}" ] || [ -z "${minor}" ] || [ -z "${patch}" ]; then
+    exit_message "VERSION <$major>.<$minor>.<$patch> is not correctly set!"
+    exit 1
+  fi
+
+  case ${2:?"Version level is required!"} in
+    major)
+      major=$(echo "$major + 1" | bc)
+      minor=0
+      patch=0
+      ;;
+
+    minor)
+      minor=$(echo "$minor + 1" | bc)
+      patch=0
+      ;;
+
+    patch)
+      patch=$(echo "$patch + 1" | bc)
+      ;;
+  esac
+
+  echo "$major.$minor.$patch"
+
+}
+
+save_version() {
+  local new_version="${1:?"A new version is required!"}"
+
+  echo "${new_version}" > VERSION
+}
+
+if not_installed mix; then
+  exit_message "mix is not installed. Please install it first."
+  exit 1
+fi
+
+if not_installed bc; then
+  exit_message "bc is not installed. Please install it first."
+  exit 1
+fi
+
+if not_installed cut; then
+  exit_message "cut is not installed. Please install it first."
+  exit 1
+fi
+
+if not_installed git; then
+  exit_message "git is not installed. Please install it first."
+  exit 1
+fi
+
+case ${1:-dev} in
+  -h | --help)
+    display_help
+    ;;
+  -v | --version)
+    display_version "${VERSION}" "${PROGRAM}"
+    ;;
+  major | minor | patch)
+      mix compile --warnings-as-errors --force
+      current_version=$(get_current_version)
+      new_version=$(increment_version "${current_version}" "${1}")
+      log_info "Releasing version v${new_version} (previous v${current_version})"
+      ensure_confirmation
+      save_version "${new_version}"
+      git commit -sam "Release ${new_version}"
+      git tag -s -a "v${new_version}" -m "Version ${new_version}"
+      log_success "You can now push the changes to the remote repository."
+    ;;
+  *)
+    display_help >&2
+    exit 1
+    ;;
+esac

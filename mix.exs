@@ -3,7 +3,7 @@ defmodule ExToolkit.MixProject do
 
   @app :ex_toolkit
   @name "ExToolkit"
-  @version "0.12.4"
+  @version "VERSION" |> File.read!() |> String.trim()
   @description "Collection of effective recipes for building Elixir applications"
   @scm_url "https://github.com/marmelasoft/ex_toolkit"
 
