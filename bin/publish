@@ -68,7 +68,13 @@ save_version() {
 
   echo "${new_version}" > VERSION
 
-  sed -i 's/\({:ex_toolkit, "~> \)[0-9]\+\.[0-9]\+\.[0-9]\+\("}\)/\1${new_version}\2/g' README.md
+  awk -v new_version="${new_version}" '
+    /\{:ex_toolkit, "~> [0-9]+\.[0-9]+\.[0-9]+"/ {
+      print "    {:ex_toolkit, \"~> " new_version "\"}"
+      next
+    }
+    { print }
+  ' README.md > README.md.tmp && mv README.md.tmp README.md
 }
 
 if not_installed mix; then
@@ -86,6 +92,11 @@ if not_installed cut; then
   exit 1
 fi
 
+if not_installed awk; then
+  exit_message "awk is not installed. Please install it first."
+  exit 1
+fi
+
 if not_installed git; then
   exit_message "git is not installed. Please install it first."
   exit 1
@@ -99,17 +110,23 @@ case ${1:-dev} in
     display_version "${VERSION}" "${PROGRAM}"
     ;;
   major | minor | patch)
-      mix compile --warnings-as-errors --force
+      if ! mix compile --warnings-as-errors --force >/dev/null; then
+        exit_message "Compilation failed! Please fix the compilation errors before publishing."
+        exit 1
+      fi
       current_version=$(get_current_version)
       new_version=$(increment_version "${current_version}" "${1}")
       log_info "Releasing version v${new_version} (previous v${current_version})"
       ensure_confirmation
       save_version "${new_version}"
-      mix test
+      if ! mix test --warnings-as-errors >/dev/null; then
+        exit_message "Tests failed! Please fix the failing tests before publishing."
+        exit 1
+      fi
       git commit -sam "Release ${new_version}"
       mix hex.publish --yes
       git tag -s -a "v${new_version}" -m "Version ${new_version}"
-      log_success "You can now push the changes to the remote repository."
+      log_success "You can now push the changes to the remote repository with `git push --follow-tags`."
     ;;
   *)
     display_help >&2
