@@ -37,6 +37,14 @@ defmodule ExToolkit.MixProject do
 
   defp package do
     [
+      name: @app,
+      files: [
+        "lib",
+        "mix.exs",
+        "README.md",
+        "LICENSE.txt",
+        "VERSION"
+      ],
       licenses: ["MIT"],
       links: %{"GitHub" => @scm_url}
     ]
