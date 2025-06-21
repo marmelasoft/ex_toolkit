@@ -126,7 +126,7 @@ case ${1:-dev} in
       git commit -sam "Release ${new_version}"
       mix hex.publish --yes
       git tag -s -a "v${new_version}" -m "Version ${new_version}"
-      log_success "You can now push the changes to the remote repository with `git push --follow-tags`."
+      log_success 'You can now push the changes to the remote repository with `git push --follow-tags`.'
     ;;
   *)
     display_help >&2
