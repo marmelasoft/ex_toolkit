@@ -41,6 +41,7 @@ defmodule ExToolkit.MixProject do
       files: [
         "lib",
         "mix.exs",
+        ".formatter.exs",
         "README.md",
         "LICENSE.txt",
         "VERSION"
