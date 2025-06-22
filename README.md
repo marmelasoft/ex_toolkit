@@ -1,9 +1,10 @@
 # Elixir Toolkit
 
-[![hex.pm](https://img.shields.io/hexpm/v/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
-[![hex.pm](https://img.shields.io/hexpm/dt/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
-[![hex.pm](https://img.shields.io/hexpm/l/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
-[![github.com](https://img.shields.io/github/last-commit/marmelasoft/ex_toolkit.svg)](https://github.com/marmelasoft/ex_toolkit)
+[![Release](https://img.shields.io/hexpm/v/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
+[![Documentation](https://img.shields.io/badge/docs-hexpm-blue.svg)](https://hexdocs.pm/pdf_extractor)
+[![Downloads](https://img.shields.io/hexpm/dt/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
+[![License](https://img.shields.io/hexpm/l/ex_toolkit.svg)](https://hex.pm/packages/ex_toolkit)
+[![Last Commit](https://img.shields.io/github/last-commit/marmelasoft/ex_toolkit.svg)](https://github.com/marmelasoft/ex_toolkit)
 
 `ExToolkit` is a collection of Elixir helpers that offers pre-built effective
 recipes for common needs when developing most applications.
